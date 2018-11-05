@@ -149,6 +149,7 @@ nav ul li a{
     }
   
     #menu-icon{
+        cursor:pointer;
         display:block;
         float: right;
         font-size: 31px;
@@ -156,14 +157,16 @@ nav ul li a{
         font-weight:bold;
     }
     #menu-icon-div{
-        height: 38px;
+        height: 46px;
         background-color: #14B9D6!important;
+        padding-right: 10px
     }
     nav ul{
         background-color: #14B9D6!important;
         list-style-type: none;
         overflow:hidden;
         height:0;
+        width:100%;
     }
     nav ul li a{
         display:block;
@@ -172,7 +175,8 @@ nav ul li a{
         float:none;
         color:#fff;
         text-decoration: none;
-        padding:0px 10px 0px;
+        padding:5px 5px;
+        border-bottom: 1px solid #fff;
     } 
      
 }
