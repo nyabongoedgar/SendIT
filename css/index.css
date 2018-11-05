@@ -1,0 +1,10 @@
+body{
+    background-color: #14B9D6!important;
+}
+#right-float{
+    float:right;
+}
+#left-float{
+    float:left;
+}
+ 
