@@ -1,3 +1,6 @@
+#profile{
+    overflow: auto;
+}
 #profile-table table{
     border-collapse: collapse;
     width: 100%;
