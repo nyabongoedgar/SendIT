@@ -1,3 +1,6 @@
+#order-view-table{
+    overflow: auto;
+}
 #order-view-table table{
     border-collapse: collapse;
     width: 100%;
@@ -18,7 +21,5 @@
 }
 #order-view-table tr  a{
     color:#fff;
-    font-family: monospace;
     font-size: 16px;
-    font-style: italic;
 }
