@@ -1,3 +1,6 @@
+#order-view-table{
+overflow-x:auto;
+}
 #order-view-table img:hover{
     height: 33px;
 }
