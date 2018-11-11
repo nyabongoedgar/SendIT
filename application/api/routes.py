@@ -104,7 +104,13 @@ def cancel_order(parcelId):
 
 @mod.route("/users/<int:userId>/parcels", methods=['GET'])
 def get_user_orders(userId):
-    for i in userObject.users:
-        pass
+    all_orders = []
+    for b in parcelObject.parcels:
+        if b['user_id'] == int(userId):
+            all_orders.append(b)
+    if len(all_orders) is 0:
+        return 'No orders for this user'
+
+    return parcelObject.get_user_orders(all_orders)
 
            

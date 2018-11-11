@@ -52,3 +52,6 @@ class Parcel:
     def cancel_specific_parcel(self,order):
         
         return jsonify(order),201
+
+    def get_user_orders(self,user_orders):
+        return jsonify({'Orders':user_orders}),200
