@@ -42,6 +42,7 @@ class Parcel:
         else:
             return jsonify(self.parcels),200
 
+    ''' method returns a specific parcel with respect to the parcelId '''
     def get_one_parcel(self,parcelId):
         item = Helpers.search(self.parcels,parcelId,'parcel_id')
         if item is None:
