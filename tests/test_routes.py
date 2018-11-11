@@ -11,7 +11,7 @@ class Test_mod_products(unittest.TestCase):
         "parcel_source":"Ntinda",
         "parcel_destination":"Kamwokya",
         "parcel_weight":20,
-        "receiver":"Kenneth"
+        "receiver_name":"Kenneth"
         }
         self.parcel_order2 = {
         "parcel_name":"phone",

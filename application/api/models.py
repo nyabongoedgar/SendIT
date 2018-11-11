@@ -2,22 +2,22 @@ from flask import jsonify, request, abort
 import datetime
 from application.api.utils import Helpers 
 
-class Users:
-    def __init__(self,name,password):
-        self.users = []
-        self.name = name
-        self.password = password
-        admin=False
-    
-    def create_account(self):
-        x = Helpers.validate_strings([self.name,self.password])
-        if x is not None:
-            return jsonify({'message':x}),400
-        new_user  = {"username":self.name, "password":self.password,"admin":admin}
-        self.users.append(new_user)
+class User:
 
-    def login(self):
-        pass
+    def __init__(self):
+        self.users = []
+        
+    
+    def signup(self,user_id,username,password,email):
+        new_user  = {"user_id":user_id,"username":username, "password":password,'email':email,"admin":False}
+        self.users.append(new_user)
+        return jsonify({'user created':self.users}),201
+
+    def login(self,username,password):
+        for i in self.users:
+            if (i['username'] == username and i['password'] == password):
+                return jsonify({'message':'Logged in'})
+        return jsonify({'message':'Invalid credentials'}),400
 
 
 
@@ -26,9 +26,9 @@ class Parcel:
         self.parcels =[]
 
 
-    def create_parcel_order_delivery(self,pid,name,source,destination,weight, receiver_name,price,date_created,status,delivered):
+    def create_parcel_order_delivery(self,pid,name,source,destination,weight, receiver_name,price,date_created,status,delivered,user_id):
         
-        order = {'parcel_id':pid, 'parcel_name':name, 'source':source,'destination':destination,'weight':weight, 'receiver_name':receiver_name, 'price':price,'date_created':date_created,'status':status, 'delivered':delivered}
+        order = {'parcel_id':pid, 'parcel_name':name, 'source':source,'destination':destination,'weight':weight, 'receiver_name':receiver_name, 'price':price,'date_created':date_created,'status':status, 'delivered':delivered,'user_id':user_id}
 
         self.parcels.append(order)
 
