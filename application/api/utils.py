@@ -38,13 +38,13 @@ class Helpers:
     def validate_strings(args):
         for i in args:
             if not isinstance(i,str) or i.isspace():
-                return 'Data provided not a string and should not be a space'
+                return 'Data provided should be a string and should not be a space'
 
     staticmethod
     def validate_integer(args):
         for i in args:
             if not isinstance(i,int) or i < 0:
-                return 'Data provided not an integer and should not be a positive number'
+                return 'Data provided should be an integer and should not be a positive number'
     @staticmethod    
     def modify_status(mylist,key,new_entry,parcelId):
 	    for i in mylist:

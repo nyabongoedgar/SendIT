@@ -9,7 +9,11 @@ class User:
         
     
     def signup(self,user_id,username,password,email):
+        for i in self.users:
+            if i['username'] == username:
+                return jsonify({'message':'Username already exists'}),400
         new_user  = {"user_id":user_id,"username":username, "password":password,'email':email,"admin":False}
+
         self.users.append(new_user)
         return jsonify({'user created':self.users}),201
 
@@ -49,8 +53,8 @@ class Parcel:
         else:
             return jsonify(item),200 
 
-    def cancel_specific_parcel(self,order):  
-        return jsonify(order),201
+    def cancel_specific_parcel(self,parcelId):  
+        return jsonify({'message':'Parcel delivery order with id '+str(parcelId)+' has been cancelled'}),201
 
     def get_user_orders(self,user_orders):
         return jsonify({'Orders':user_orders}),200

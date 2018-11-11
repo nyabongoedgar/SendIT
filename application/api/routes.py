@@ -22,7 +22,7 @@ def signup():
     email = data.get('email')
     a = Helpers.validate_strings([username,password,email])
     if a is not None:
-        return jsonify({'message':a}),400
+        return jsonify({'message':'username,email and password required. '+a}),400
     b = Helpers.gen_id(userObject.users,"user_id")
     return userObject.signup(b,username,password,email)
 
@@ -101,8 +101,8 @@ def cancel_order(parcelId):
         return jsonify({'message':a}),400
             
     cancelled_order = Helpers.modify_status(parcelObject.parcels,'parcel_id',status,parcelId)
-    
-    return parcelObject.cancel_specific_parcel(cancelled_order)
+    if cancelled_order is not None:
+        return parcelObject.cancel_specific_parcel(parcelId)
 
 @mod.route("/users/<int:userId>/parcels", methods=['GET'])
 def get_user_orders(userId):

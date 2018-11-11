@@ -68,6 +68,7 @@ class Test_mod_products(unittest.TestCase):
         self.assertEqual(resp_data['user_id'],1)    
 
     def test_cancel_order(self):
+        self.client.post('/api/v1/parcels', data=json.dumps(self.parcel_order), content_type="application/json")
         rv = self.client.put('/api/v1/parcels/1/cancel', data = json.dumps({'status':'cancelled'}), content_type="application/json" )
         self.assertEqual(rv.status_code,201)
        
