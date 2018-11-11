@@ -62,7 +62,7 @@ def create_parcel_delivery_order():
     if isinstance(x,int):
         price = x
     else:
-        return jsonify({'message':x}) 
+        return jsonify({'message':x}),400 
        
     validate_int = Helpers.validate_integer([weight,price])
     if validate_int is not None:
@@ -87,7 +87,20 @@ def get_one_sale(parcelId):
 
 @mod.route("/parcels/<int:parcelId>/cancel", methods=['PUT'])
 def cancel_order(parcelId):
-    return parcelObject.cancel_specific_parcel(parcelId)
+    check_order = Helpers.search(parcelObject.parcels,parcelId,'parcel_id')
+    if check_order is None:
+        return jsonify({'message':'parcel with parcel id of ' + str(parcelId) + ' doesnot exist'}),400
+    data = request.get_json()
+    status = data.get('status')
+    if status != "cancelled":
+        return jsonify({'message':'status can only be cancelled'}),400
+    a = Helpers.validate_strings([status])
+    if a is not None:
+        return jsonify({'message':a}),400
+            
+    cancelled_order = Helpers.modify_status(parcelObject.parcels,'parcel_id',status,parcelId)
+    
+    return parcelObject.cancel_specific_parcel(cancelled_order)
 
 
            

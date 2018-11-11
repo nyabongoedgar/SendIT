@@ -4,7 +4,8 @@ class Helpers:
     def search(items_list,item_id,item_key): 
         for item in items_list:
             if item[item_key] == int(item_id):
-                return item  
+                return item
+          
 
     @staticmethod
     def gen_id(items_list,item_key):
@@ -47,6 +48,6 @@ class Helpers:
     @staticmethod    
     def modify_status(mylist,key,new_entry,parcelId):
 	    for i in mylist:
-		    if i[key] == 1:
+		    if i[key] == parcelId:
 			    i['status'] = new_entry
-	    return mylist
+	    return i

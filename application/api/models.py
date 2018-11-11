@@ -49,8 +49,6 @@ class Parcel:
         else:
             return jsonify(item),200 
 
-    def cancel_specific_parcel(self,parcelId):
-        data = request.get_json()
-        status = data.get('status')
-        x = Helpers.modify_status(self.parcels,'parcel_id',status,parcelId)
-        return jsonify(x),201
+    def cancel_specific_parcel(self,order):
+        
+        return jsonify(order),201
