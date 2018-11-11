@@ -26,13 +26,13 @@ class Parcel:
         self.parcels =[]
 
 
-    def create_parcel_order_delivery(self,pid,name,source,destination,weight, receiver_name,price,date_created,status,delivered,user_id):
+    def create_parcel_order_delivery(self,pid,name,source,destination,weight, receiver_name,receiver_telephone,price,date_created,status,delivered,user_id):
         
-        order = {'parcel_id':pid, 'parcel_name':name, 'source':source,'destination':destination,'weight':weight, 'receiver_name':receiver_name, 'price':price,'date_created':date_created,'status':status, 'delivered':delivered,'user_id':user_id}
+        order = {'parcel_id':pid, 'parcel_name':name, 'source':source,'destination':destination,'weight':weight, 'receiver_name':receiver_name, 'receiver_telephone':receiver_telephone,'price':price,'date_created':date_created,'status':status, 'delivered':delivered,'user_id':user_id}
 
         self.parcels.append(order)
 
-        return jsonify(self.parcels),201
+        return jsonify({'message':'parcel order delivery placed','status':'success'}),201
 
     '''' checks if there are orders in self.parcels and returns all of them '''   
     def get_all_parcels(self):
@@ -49,8 +49,7 @@ class Parcel:
         else:
             return jsonify(item),200 
 
-    def cancel_specific_parcel(self,order):
-        
+    def cancel_specific_parcel(self,order):  
         return jsonify(order),201
 
     def get_user_orders(self,user_orders):

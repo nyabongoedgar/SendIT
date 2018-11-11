@@ -54,6 +54,7 @@ def create_parcel_delivery_order():
     date_created = str(datetime.datetime.utcnow())
     weight = int(data.get('parcel_weight'))
     receiver_name =data.get('receiver_name')
+    receiver_telephone =data.get('receiver_telephone')
     delivered = False
     status = 'pending'
     
@@ -72,7 +73,7 @@ def create_parcel_delivery_order():
     if validate_string is not None:
         return jsonify({'message':validate_string}),400
     
-    return parcelObject.create_parcel_order_delivery(pid,name,source,destination,weight, receiver_name,price,date_created,status,delivered,user_id)
+    return parcelObject.create_parcel_order_delivery(pid,name,source,destination,weight, receiver_name,receiver_telephone,price,date_created,status,delivered,user_id)
 
 ''' Fetch all parcels records '''
 @mod.route('/parcels', methods= ['GET'])
@@ -85,6 +86,7 @@ def get_all_parcels():
 def get_one_sale(parcelId):
     return parcelObject.get_one_parcel(parcelId)
 
+''' route for cancelling a parcel order '''
 @mod.route("/parcels/<int:parcelId>/cancel", methods=['PUT'])
 def cancel_order(parcelId):
     check_order = Helpers.search(parcelObject.parcels,parcelId,'parcel_id')
