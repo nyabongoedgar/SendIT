@@ -1,3 +1,4 @@
+App hosted on Heroku at https://sendinc.herokuapp.com/api/v1/
 User interface hosted at https://nyabongoedgar.github.io/SendIT/UI/
 
 <h1> Getting Started </h1>
