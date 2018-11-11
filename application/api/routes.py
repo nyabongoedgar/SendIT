@@ -102,5 +102,9 @@ def cancel_order(parcelId):
     
     return parcelObject.cancel_specific_parcel(cancelled_order)
 
+@mod.route("/users/<int:userId>/parcels", methods=['GET'])
+def get_user_orders(userId):
+    for i in userObject.users:
+        pass
 
            
