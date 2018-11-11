@@ -34,7 +34,7 @@ class Parcel:
 
         return jsonify(self.parcels),201
 
-         
+    '''' checks if there are orders in self.parcels and returns all of them '''   
     def get_all_parcels(self):
         if len(self.parcels) is 0:
             responseObject={"message":"There are no items to display at the moment"}
