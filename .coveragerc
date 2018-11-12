@@ -11,8 +11,8 @@ omit =
       *Procfile
       */usr/lib/python3/dist-packages/*
       *__init__.py*
-	  */models.py
-	  */tests/*
-        requirements.txt
-        coveralls.yml
-         api/models.py
+	*/models.py
+	*/tests/*
+      requirements.txt
+      coveralls.yml
+      api/models.py
