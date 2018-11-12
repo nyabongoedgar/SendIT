@@ -1,6 +1,8 @@
-App hosted on Heroku at https://sendinc.herokuapp.com/api/v1/   <br>
+App hosted on Heroku at https://sendinc.herokuapp.com/api/v1/   
 User interface hosted at https://nyabongoedgar.github.io/SendIT/UI/
-[![Build Status](https://travis-ci.org/nyabongoedgar/SendIT.svg?branch=ft-challenge-two)](https://travis-ci.org/nyabongoedgar/SendIT)<a href="https://codeclimate.com/github/nyabongoedgar/SendIT/maintainability"><img src="https://api.codeclimate.com/v1/badges/de8d6ff5a0fdf45eba8c/maintainability" /></a><a href="https://codeclimate.com/github/nyabongoedgar/SendIT/test_coverage"><img src="https://api.codeclimate.com/v1/badges/de8d6ff5a0fdf45eba8c/test_coverage" /></a>
+<br>
+[![Coverage Status](https://coveralls.io/repos/github/nyabongoedgar/SendIT/badge.svg?branch=ft-challenge-two)](https://coveralls.io/github/nyabongoedgar/SendIT?branch=ft-challenge-two)
+[![Build Status](https://travis-ci.org/nyabongoedgar/SendIT.svg?branch=ft-challenge-two)](https://travis-ci.org/nyabongoedgar/SendIT)<a href="https://codeclimate.com/github/nyabongoedgar/SendIT/maintainability"><img src="https://api.codeclimate.com/v1/badges/de8d6ff5a0fdf45eba8c/maintainability" /></a>
 <h1> Getting Started </h1>
 <h2> Pre-requisites </h2>
 
