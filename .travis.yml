@@ -6,7 +6,7 @@ install:
   - pip install coveralls
 
 script:
-  - pytest --cov =./
+  - py.test --cov=application tests/
   # submit the report
   - coveralls
 
