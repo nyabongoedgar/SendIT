@@ -13,3 +13,6 @@ omit =
       *__init__.py*
 	  */models.py
 	  */tests/*
+        requirements.txt
+        coveralls.yml
+         api/models.py
