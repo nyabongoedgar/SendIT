@@ -1,5 +1,6 @@
 #profile-table{
     overflow: auto;
+    margin: 0px 20 0 20px;
 }
 #profile-table table{
     border-collapse: collapse;

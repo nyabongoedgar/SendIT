@@ -2,10 +2,10 @@
 function login(){
     a = document.getElementById('mycheck').checked;
     if (a == true){
-        return document.getElementById("login_form").setAttribute("action","admin/admin-dashboard.html");
+        return document.getElementById("login_form").setAttribute("action","admin/all-orders.html");
     }
     else{
-        return document.getElementById("login_form").setAttribute("action","users/dashboard.html");
+        return document.getElementById("login_form").setAttribute("action","users/all-orders.html");
     }
 }
 function change_location(){

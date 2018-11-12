@@ -1,6 +1,7 @@
 #order-view-table{
     overflow: auto;
-    margin:0px 20 0 20px;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 #order-view-table table{
     border-collapse: collapse;

@@ -91,12 +91,14 @@ input[type=text],input[type=password],input[type=number]{
     outline: none;
     border: 1px solid #ddd;   
 }
-.tips p{
+.tips p{color: #fff!important;}
+.tips{
     background-color: #14b9d6;
     padding: 20px;
     box-sizing: border-box;
-    color: #fff!important;
-    border-radius: 20px
+    margin-left: 20px;
+    margin-right:20px;
+  
 }
 .tips a{
     color:#ffff00;
