@@ -31,12 +31,12 @@ class Test_data_mod(unittest.TestCase):
     
     def test_validate_strings(self):
         y = Helpers.validate_strings(['Edison','Kenga',5])
-        self.assertEqual(y,'Data provided not a string and should not be a space')
+        self.assertEqual(y,'Data provided should be a string and should not be a space')
 
     def test_validate_integers(self):
         x = Helpers.validate_integer([4,5,6,7,-1])
         z = Helpers.validate_integer([4,5,6,7,8])
         y = Helpers.validate_integer([4,5,6,7,8,'Edgar'])
-        self.assertEqual(x,'Data provided not an integer and should not be a positive number')
+        self.assertEqual(x,'Data provided should be an integer and should not be a positive number')
         self.assertEqual(z,None) 
-        self.assertEqual(y,'Data provided not an integer and should not be a positive number')
+        self.assertEqual(y,'Data provided should be an integer and should not be a positive number')
