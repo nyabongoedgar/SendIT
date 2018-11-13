@@ -59,11 +59,8 @@ def create_parcel_delivery_order():
     status = 'pending'
     
 
-    x = Helpers.gen_price(weight)
-    if isinstance(x,int):
-        price = x
-    else:
-        return jsonify({'message':x}),400 
+    price = Helpers.gen_price(weight)
+   
        
     validate_int = Helpers.validate_integer([weight,price])
     if validate_int is not None:
@@ -94,11 +91,9 @@ def cancel_order(parcelId):
         return jsonify({'message':'parcel with parcel id of ' + str(parcelId) + ' doesnot exist'}),400
     data = request.get_json()
     status = data.get('status')
-    if status != "cancelled":
+   
+    if (status != "cancelled"):
         return jsonify({'message':'status can only be cancelled'}),400
-    a = Helpers.validate_strings([status])
-    if a is not None:
-        return jsonify({'message':a}),400
             
     cancelled_order = Helpers.modify_status(parcelObject.parcels,'parcel_id',status,parcelId)
     if cancelled_order is not None:
@@ -111,7 +106,7 @@ def get_user_orders(userId):
         if b['user_id'] == int(userId):
             all_orders.append(b)
     if len(all_orders) is 0:
-        return 'No orders for this user'
+        return jsonify({'message':'No orders for this user'}),400
 
     return parcelObject.get_user_orders(all_orders)
 

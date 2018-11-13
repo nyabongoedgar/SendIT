@@ -23,7 +23,7 @@ class Helpers:
     def gen_price(weight):
 	    if weight > 1000:
 		    return 'Weight exceeded'
-	    if weight < 0 :
+	    if weight <= 0 :
 		    return 'weight should not be zero'
 	    if weight <= 20:
 		    return 5000

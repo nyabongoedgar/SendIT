@@ -22,9 +22,26 @@ class Test_mod_products(unittest.TestCase):
         "receiver_name":"Kenneth",
         "receiver_telephone":"0779865557"
         }
+        self.parcel_order3 = {
+        "parcel_name":"phone",
+        "parcel_source":"Bukoto",
+        "parcel_destination":"KaMakindyemwokya",
+        "parcel_weight":0,
+        "receiver_name":"Kenneth",
+        "receiver_telephone":"0779865557"
+        }
+        self.parcel_order4 = {
+        "parcel_name":658,
+        "parcel_source":"Bukoto",
+        "parcel_destination":"KaMakindyemwokya",
+        "parcel_weight":30,
+        "receiver_name":"Kenneth",
+        "receiver_telephone":"0779865557"
+        }
     
         self.client = app.test_client()
         self.client.post('/api/v1/parcels', data=json.dumps(self.parcel_order), content_type="application/json")
+        self.client.post('/api/v1/parcels', data=json.dumps(self.parcel_order2), content_type="application/json")
         self.client.post('/api/v1/signup', data=json.dumps({'username':'timo','password':'1234','email':'timo@gmail.com'}), content_type="application/json")
 
     @classmethod
@@ -35,10 +52,19 @@ class Test_mod_products(unittest.TestCase):
         rv = self.client.get('/api/v1/')
         self.assertEqual(rv.status_code, 200)
     def test_signup(self):
-        rv = self.client.post('api/v1/signup', data=json.dumps({'username':'eddie','password':'1234','email':'eddie@gmail.com'}), content_type="application/json")
+        rv = self.client.post('/api/v1/signup', data=json.dumps({'username':'eddie','password':'1234','email':'eddie@gmail.com'}), content_type="application/json")
+        wrong_data = self.client.post('api/v1/signup', data=json.dumps({'username':678,'password':8492,'email':470}), content_type="application/json")
+        response = json.loads(wrong_data.data.decode())
+        self.assertEqual(wrong_data.status_code,400)
+        self.assertEqual(response['message'],'username,email and password required. Data provided should be a string and should not be a space')
         self.assertEqual(rv.status_code,201) 
+
     def test_login(self):
-        rv = self.client.post('api/v1/login',data=json.dumps({'username':'timo','password':'1234'}),content_type="application/json")
+        rv = self.client.post('/api/v1/login',data=json.dumps({'username':'timo','password':'1234'}),content_type="application/json")
+        wrong_data = self.client.post('api/v1/login',data = json.dumps({'username':123,'password':'pass'}),content_type="application/json")
+        response = json.loads(wrong_data.data.decode())
+        self.assertEqual(wrong_data.status_code,400)
+        self.assertEqual(response['message'],'Data provided should be a string and should not be a space')
         self.assertEqual(rv.status_code,200)
         resp_data = json.loads(rv.data.decode())
         self.assertEqual(resp_data['message'],'Logged in')
@@ -57,7 +83,16 @@ class Test_mod_products(unittest.TestCase):
         self.assertEqual(rv.status_code, 201)
         resp_data = json.loads(rv.data.decode())
         self.assertEqual(resp_data['message'],'parcel order delivery placed')
-        self.assertEqual(resp_data['status'],'success') 
+        self.assertEqual(resp_data['status'],'success')
+        #invalid data type
+        wrong_data = self.client.post('/api/v1/parcels', data=json.dumps(self.parcel_order3), content_type="application/json")
+        self.assertEqual(wrong_data.status_code,400)
+        response = json.loads(wrong_data.data.decode())
+        self.assertEqual(response['message'],'Data provided should be an integer and should not be a positive number')
+        #invalid string
+        wrong_data2 = self.client.post('/api/v1/parcels', data=json.dumps(self.parcel_order4), content_type="application/json")
+        response2 = json.loads(wrong_data2.data.decode())
+        self.assertEqual(response2['message'],'Data provided should be a string and should not be a space')  
 
     def test_get_one_order(self):
         rv = self.client.get('/api/v1/parcels/1')
@@ -71,8 +106,28 @@ class Test_mod_products(unittest.TestCase):
         self.client.post('/api/v1/parcels', data=json.dumps(self.parcel_order), content_type="application/json")
         rv = self.client.put('/api/v1/parcels/1/cancel', data = json.dumps({'status':'cancelled'}), content_type="application/json" )
         self.assertEqual(rv.status_code,201)
-       
-         
+        wrong_data1 = self.client.put('/api/v1/parcels/300/cancel', data = json.dumps({'status':'cancelled'}), content_type="application/json" )
+        self.assertEqual(wrong_data1.status_code,400)
+        response1 = json.loads(wrong_data1.data.decode())
+        self.assertEqual(response1['message'],'parcel with parcel id of 300 doesnot exist')     
+
+        wrong_data2 = self.client.put('/api/v1/parcels/1/cancel', data = json.dumps({'status':'something'}), content_type="application/json" ) 
+        response2 = json.loads(wrong_data2.data.decode())
+        self.assertEqual(wrong_data2.status_code,400) 
+        self.assertEqual(response2['message'],'status can only be cancelled')
+        
+
+    def test_get_orders_by_userId(self):
+        rv = self.client.get('/api/v1/users/1/parcels')
+        self.assertEqual(rv.status_code,200)
+        response = json.loads(rv.data.decode())
+        for i in response:
+            self.assertIn('Orders',i)  
+        self.assertNotEqual(len(response),0)
+        wrong_data = self.client.get('/api/v1/users/30/parcels')
+        response2 = json.loads(wrong_data.data.decode())
+        self.assertEqual(response2['message'],'No orders for this user') 
+        self.assertEqual(wrong_data.status_code,400) 
 
 if __name__ == "__main__":
     unittest.main()
