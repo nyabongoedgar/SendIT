@@ -8,12 +8,12 @@ mod = Blueprint('parcels',__name__,url_prefix='/api/v1')
 parcelObject = Parcel()
 userObject = User()
 
-''' index route '''
+#index route 
 @mod.route('/')
 def index():
     return 'Welcome to the SendIT App'
 
-''' Account creation route '''
+#Account creation route
 @mod.route('/signup', methods=['POST'])
 def signup():
     data = request.get_json()
@@ -26,7 +26,7 @@ def signup():
     b = Helpers.gen_id(userObject.users,"user_id")
     return userObject.signup(b,username,password,email)
 
-''' Sign in route '''
+#Sign in route
 @mod.route('/login',methods=['POST'])
 def signin():
     data = request.get_json()
@@ -41,7 +41,7 @@ def signin():
 def logout():
     return userObject.logout()
 
-''' Create a parcel delivery order '''
+#Create a parcel delivery order
 @mod.route("/parcels", methods=['POST'])
 def create_parcel_delivery_order():
    
@@ -80,18 +80,18 @@ def create_parcel_delivery_order():
     
     return parcelObject.create_parcel_order_delivery(order)
 
-''' Fetch all parcels records '''
+#Fetch all parcels records '''
 @mod.route('/parcels', methods= ['GET'])
 def get_all_parcels():
     return parcelObject.get_all_parcels()
            
 
-''' Fetch a single parcel record '''
+#Fetch a single parcel record
 @mod.route("/parcels/<int:parcelId>", methods= ['GET'])
 def get_one_sale(parcelId):
     return parcelObject.get_one_parcel(parcelId)
 
-''' route for cancelling a parcel order '''
+#route for cancelling a parcel order
 @mod.route("/parcels/<int:parcelId>/cancel", methods=['PUT'])
 def cancel_order(parcelId):
     check_order = Helpers.search(parcelObject.parcels,parcelId,'parcel_id')
@@ -107,6 +107,7 @@ def cancel_order(parcelId):
     if cancelled_order is not None:
         return parcelObject.cancel_specific_parcel(parcelId)
 
+#route for getting all orders made by a specific user
 @mod.route("/users/<int:userId>/parcels", methods=['GET'])
 def get_user_orders(userId):
     all_orders = []

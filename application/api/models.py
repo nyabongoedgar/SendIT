@@ -35,19 +35,20 @@ class Parcel:
     def __init__(self):
         self.parcels =[]
 
-
+    # creates prcel with data sent from route
     def create_parcel_order_delivery(self,order):
         self.parcels.append(order)
         return jsonify({'message':'parcel order delivery placed','status':'success'}),201
 
-    '''' checks if there are orders in self.parcels and returns all of them '''   
+    #checks if there are orders in self.parcels and returns all of them
     def get_all_parcels(self):
         if len(self.parcels) is 0:
             responseObject={"message":"There are no items to display at the moment"}
             return jsonify(responseObject),204
         else:
             return jsonify(self.parcels),200
-
+    
+    #model method for picking one specific parcel
     def get_one_parcel(self,parcelId):
         item = Helpers.search(self.parcels,parcelId,'parcel_id')
         if item is None:
@@ -55,8 +56,10 @@ class Parcel:
         else:
             return jsonify(item),200 
 
+    #model method for cancelling a parcel delivery order.
     def cancel_specific_parcel(self,parcelId):  
         return jsonify({'message':'Parcel delivery order with id '+str(parcelId)+' has been cancelled'}),201
 
+    #Admin method for picking user specific orders
     def get_user_orders(self,user_orders):
         return jsonify({'Orders':user_orders}),200

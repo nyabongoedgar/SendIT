@@ -7,6 +7,10 @@ User interface hosted at https://nyabongoedgar.github.io/SendIT/UI/
 [![Coverage Status](https://coveralls.io/repos/github/nyabongoedgar/SendIT/badge.svg?branch=develop)](https://coveralls.io/github/nyabongoedgar/SendIT?branch=develop)
 
 <h1> Working Endpoints</h1>
+<p><em>Before using the routes before, you should first signup and then login, After your session, you can logout by using the logout route</em></p>
+<p>To signup, visit, https://sendinc.herokuapp.com/api/v1/signup and provide a "username", "password" and "email", all must be a string</p>
+<p>To signin, visit, https://sendinc.herokuapp.com/api/v1/login and provide the "username" and the "password" you used to create the account.</p>
+<p>To logout, visit, https://sendinc.herokuapp.com/api/v1/logout with a get method</p>
 <ol>
 <li>GET /parcels, accessible at https://sendinc.herokuapp.com/api/v1/parcels </li>
 <li>GET /parcels/<parcelId>, accessible at https://sendinc.herokuapp.com/api/v1/parcels/<int:parcelId> </li>
