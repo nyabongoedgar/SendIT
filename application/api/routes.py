@@ -5,7 +5,7 @@ from application.api.models import User
 from application.api.utils import Helpers
 from functools import wraps
 
- 
+mod = Blueprint('parcels',__name__,url_prefix='/api/v1')
 
 #the actual decorator function
 def require_appkey(view_function):
@@ -16,7 +16,7 @@ def require_appkey(view_function):
             return view_function(*args, **kwargs)
         else:
             abort(401)
-        return decorated_function
+    return decorated_function
 
 
 parcel_object = Parcel()
@@ -121,7 +121,7 @@ def get_user_orders(userId):
         if b['user_id'] == int(userId):
             all_orders.append(b)
     if len(all_orders) is 0:
-        return jsonify({'message':'No orders for this user'}),400
+        return jsonify({'message':'No orders for this user'}),200
 
     return parcel_object.get_user_orders(all_orders)
 

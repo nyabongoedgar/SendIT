@@ -56,7 +56,7 @@ class Test_routes(unittest.TestCase):
         rv = self.client.post('/api/v1/signup', data=json.dumps({'username':'eddie','password':'1234','email':'eddie@gmail.com'}), content_type="application/json")
         self.assertEqual(rv.status_code,201)
         resp_right = json.loads(rv.data.decode())
-        self.assertEqual(resp_right['message'],'Your user accoutn has been created') 
+        self.assertEqual(resp_right['message'],'Your user account has been created') 
         wrong_data = self.client.post('api/v1/signup', data=json.dumps({'username':678,'password':8492,'email':470}), content_type="application/json")
         response = json.loads(wrong_data.data.decode())
         self.assertEqual(wrong_data.status_code,400)
@@ -127,16 +127,16 @@ class Test_routes(unittest.TestCase):
         
 
     def test_get_orders_by_userId(self):
-        rv = self.client.get('/api/v1/users/1/parcels')
+        rv = self.client.get('/api/v1/users/1/parcels?key=mysimpleapikey')
         self.assertEqual(rv.status_code,200)
         response = json.loads(rv.data.decode())
         for i in response:
             self.assertIn('Orders',i)  
         self.assertNotEqual(len(response),0)
-        wrong_data = self.client.get('/api/v1/users/30/parcels')
+        wrong_data = self.client.get('/api/v1/users/30/parcels?key=mysimpleapikey')
         response2 = json.loads(wrong_data.data.decode())
         self.assertEqual(response2['message'],'No orders for this user') 
-        self.assertEqual(wrong_data.status_code,400) 
+        self.assertEqual(wrong_data.status_code,200) 
 
 if __name__ == "__main__":
     unittest.main()
