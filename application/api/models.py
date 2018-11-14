@@ -30,12 +30,8 @@ class Parcel:
         self.parcels =[]
 
 
-    def create_parcel_order_delivery(self,pid,name,source,destination,weight, receiver_name,receiver_telephone,price,date_created,status,delivered,user_id):
-        
-        order = {'parcel_id':pid, 'parcel_name':name, 'source':source,'destination':destination,'weight':weight, 'receiver_name':receiver_name, 'receiver_telephone':receiver_telephone,'price':price,'date_created':date_created,'status':status, 'delivered':delivered,'user_id':user_id}
-
+    def create_parcel_order_delivery(self,order):
         self.parcels.append(order)
-
         return jsonify({'message':'parcel order delivery placed','status':'success'}),201
 
     '''' checks if there are orders in self.parcels and returns all of them '''   

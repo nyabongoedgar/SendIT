@@ -40,6 +40,7 @@ def signin():
 ''' Create a parcel delivery order '''
 @mod.route("/parcels", methods=['POST'])
 def create_parcel_delivery_order():
+   
     if len(userObject.users) is 0:
         return jsonify({'message':'Login is required !'}),401
 
@@ -70,7 +71,11 @@ def create_parcel_delivery_order():
     if validate_string is not None:
         return jsonify({'message':validate_string}),400
     
-    return parcelObject.create_parcel_order_delivery(pid,name,source,destination,weight, receiver_name,receiver_telephone,price,date_created,status,delivered,user_id)
+
+    order = {'parcel_id':pid, 'parcel_name':name, 'source':source,'destination':destination,'weight':weight, 'receiver_name':receiver_name, 'receiver_telephone':receiver_telephone,'price':price,'date_created':date_created,'status':status, 'delivered':delivered,'user_id':user_id}  
+
+    
+    return parcelObject.create_parcel_order_delivery(order)
 
 ''' Fetch all parcels records '''
 @mod.route('/parcels', methods= ['GET'])
