@@ -1,0 +1,27 @@
+#order-view-table{
+    overflow: auto;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+#order-view-table table{
+    border-collapse: collapse;
+    width: 100%;
+    color: #fff;
+}
+#order-view-table td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+#order-view-table tr:nth-child(even) {
+    height: 35px;
+	background-color: #0F91A8;
+}
+#order-view-table tr:nth-of-type(odd) {
+	height: 35px;
+	background-color: #14B9D6;
+}
+#order-view-table tr  a{
+    color:#fff;
+    font-size: 16px;
+}

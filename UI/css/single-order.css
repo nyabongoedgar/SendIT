@@ -1,0 +1,32 @@
+#order-view-table{
+overflow-x:auto;
+margin: 0px 20 0 20px;
+}
+#order-view-table img:hover{
+    height: 33px;
+}
+#order-view-table table{
+    border-collapse: collapse;
+    width: 100%;
+    color:#fff;
+}
+#order-view-table td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+ 
+#order-view-table tr:nth-child(even) {
+    height: 35px;
+	background-color: #0F91A8;
+}
+#order-view-table tr:nth-of-type(odd) {
+	height: 35px;
+	background-color: #14B9D6;
+}
+.right-float{
+    float:right!important;
+}
+.edit-button{
+    background-color: #faebd7!important;
+}
