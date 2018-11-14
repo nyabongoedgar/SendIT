@@ -15,7 +15,7 @@ class User:
         new_user  = {"user_id":user_id,"username":username, "password":password,'email':email,"admin":False}
 
         self.users.append(new_user)
-        return jsonify({'message':'Your user accoutn has been created'}),201
+        return jsonify({'message':'Your user account has been created'}),201
 
     def login(self,username,password):
         for i in self.users:
@@ -24,6 +24,13 @@ class User:
                 self.logged_in.append(user_id)
                 return jsonify({'message':'Logged in'}),200            
         return jsonify({'message':'Invalid credentials'}),400
+    
+    def promote(self,username):
+        for i in self.users:
+            if i['username'] == username:
+                i['admin'] = True
+            return jsonify({'message':username + 'promoted to admin'}),200
+        return jsonify({'message':'failed to promote '+ username}),400
 
     def logout(self):
         if len(self.logged_in) is not None:
@@ -44,7 +51,7 @@ class Parcel:
     def get_all_parcels(self):
         if len(self.parcels) is 0:
             responseObject={"message":"There are no items to display at the moment"}
-            return jsonify(responseObject),204
+            return jsonify(responseObject),200
         else:
             return jsonify(self.parcels),200
     
@@ -52,7 +59,7 @@ class Parcel:
     def get_one_parcel(self,parcelId):
         item = Helpers.search(self.parcels,parcelId,'parcel_id')
         if item is None:
-            return jsonify({"messagae":"Pacel ID not valid and cannot be a negative"})
+            return jsonify({"messagae":"Pacel ID not valid and cannot be a negative"}),400
         else:
             return jsonify(item),200 
 
