@@ -1,10 +1,28 @@
-App hosted on Heroku at https://sendinc.herokuapp.com/api/v1/
+App hosted on Heroku at https://sendinc.herokuapp.com/api/v1/          
+<br/>
 User interface hosted at https://nyabongoedgar.github.io/SendIT/UI/
-<br>
+<br/>
+
 [![Build Status](https://travis-ci.org/nyabongoedgar/SendIT.svg?branch=develop)](https://travis-ci.org/nyabongoedgar/SendIT)<a href="https://codeclimate.com/github/nyabongoedgar/SendIT/maintainability"><img src="https://api.codeclimate.com/v1/badges/de8d6ff5a0fdf45eba8c/maintainability" /></a>
 [![Coverage Status](https://coveralls.io/repos/github/nyabongoedgar/SendIT/badge.svg?branch=develop)](https://coveralls.io/github/nyabongoedgar/SendIT?branch=develop)
 
-<h1> Getting Started </h1>
+<h1> Working Endpoints</h1>
+<ol>
+<li>GET /parcels, accessible at https://sendinc.herokuapp.com/api/v1/parcels </li>
+<li>GET /parcels/<parcelId>, accessible at https://sendinc.herokuapp.com/api/v1/parcels/<int:parcelId> </li>
+<li>GET /users/<userId>/parcels, accessible at https://sendinc.herokuapp.com/api/v1/users/<int:userId>/parcels </li>
+<li>PUT /parcels/<parcelId>/cancel, accessible at https://sendinc.herokuapp.com/api/v1/parcels/<int:parcelId>/cancel </li>
+<li>POST /parcels, accessible at https://sendinc.herokuapp.com/api/v1/parcels 
+<br> A parcel order should look like this <br> {
+        "parcel_name":"bag",
+        "parcel_source":"Bukoto",
+        "parcel_destination":"Kamwokya",
+        "parcel_weight":30,
+        "receiver_name":"Chris Tomlin",
+        "receiver_telephone":"0779865557"
+        }</li>
+</ol>
+<h2> Getting Started </h2>
 <h2> Pre-requisites </h2>
 
 <ul><li>Python 3.5 https://www.python.org/getit/</li><li>pip https://pip.pypa.io/en/stable/installing/</li><li>Flask 1.0.2</li></ul>
@@ -54,4 +72,3 @@ User interface hosted at https://nyabongoedgar.github.io/SendIT/UI/
 
 <tr><td>POST /parcels</td>	<td>Create a parcel delivery order</td>	</tr>
 
-</table>  
