@@ -21,18 +21,21 @@ class Helpers:
 
     @staticmethod
     def gen_price(weight):
-	    if weight > 1000:
-		    return 'Weight exceeded'
-	    if weight <= 0 :
-		    return 'weight should not be zero'
-	    if weight <= 20:
-		    return 5000
-	    if weight <=50:
-		    return 10000
-	    if weight <=100:
-		    return 15000
-	    if weight > 100:
-		    return 20000
+        price = ""
+        if weight <= 0 :
+            price = 'weight should not be zero'
+        if (weight > 0 and weight <= 20):
+            price = 5000
+        if (weight > 20 and weight <= 50):
+            price = 10000
+        if (weight > 50 and weight <= 100):
+            price = 15000
+        if (weight > 100 and weight <= 1000):
+            price = 20000
+        if weight > 1000:
+            price = 'Weight exceeded'
+        return price
+
 
     staticmethod
     def validate_strings(args):
