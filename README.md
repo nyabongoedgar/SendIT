@@ -1,7 +1,8 @@
 App hosted on Heroku at https://sendinc.herokuapp.com/api/v1/
 User interface hosted at https://nyabongoedgar.github.io/SendIT/UI/
 <br>
-[![Coverage Status](https://coveralls.io/repos/github/nyabongoedgar/SendIT/badge.svg?branch=ft-develop)](https://coveralls.io/github/nyabongoedgar/SendIT?branch=develop)
+[![Coverage
+Status(https://coveralls.io/repos/github/nyabongoedgar/SendIT/badge.svg?branch=develop)](https://coveralls.io/github/nyabongoedgar/SendIT?branch=develop)
 [![Build Status](https://travis-ci.org/nyabongoedgar/SendIT.svg?branch=develop)](https://travis-ci.org/nyabongoedgar/SendIT)<a href="https://codeclimate.com/github/nyabongoedgar/SendIT/maintainability"><img src="https://api.codeclimate.com/v1/badges/de8d6ff5a0fdf45eba8c/maintainability" /></a>
 
 <h1> Getting Started </h1>
