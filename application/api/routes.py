@@ -1,10 +1,24 @@
-from flask import Blueprint,request,jsonify 
+from flask import Blueprint,request,jsonify, abort 
 import json , datetime
 from application.api.models import Parcel
 from application.api.models import User
 from application.api.utils import Helpers
+from functools import wraps
 
-mod = Blueprint('parcels',__name__,url_prefix='/api/v1')
+ 
+
+#the actual decorator function
+def require_appkey(view_function):
+    @wraps(view_function)
+    #the new, post-decoration function
+    def decorated_function(*args, **kwargs):
+        if request.args.get('key') and request.args.get('key') == 'mysimpleapikey':
+            return view_function(*args, **kwargs)
+        else:
+            abort(401)
+        return decorated_function
+
+
 parcel_object = Parcel()
 user_object = User()
 
@@ -100,6 +114,7 @@ def cancel_order(parcelId):
 
 #route for getting all orders made by a specific user
 @mod.route("/users/<int:userId>/parcels", methods=['GET'])
+@require_appkey
 def get_user_orders(userId):
     all_orders = []
     for b in parcel_object.parcels:
