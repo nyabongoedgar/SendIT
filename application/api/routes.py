@@ -37,15 +37,18 @@ def signin():
         return jsonify({'message':b}),400
     return userObject.login(username,password)
 
+@mod.route('/logout')
+def logout():
+    return userObject.logout()
+
 ''' Create a parcel delivery order '''
 @mod.route("/parcels", methods=['POST'])
 def create_parcel_delivery_order():
    
-    if len(userObject.users) is 0:
+    if len(userObject.logged_in) is 0:
         return jsonify({'message':'Login is required !'}),401
 
-    for i in userObject.users:
-        user_id = i["user_id"]
+    user_id = userObject.logged_in[0]
 
     data = request.get_json()
     pid = Helpers.gen_id(parcelObject.parcels,'parcel_id')

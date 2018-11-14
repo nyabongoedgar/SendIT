@@ -2,7 +2,7 @@ import unittest, json, datetime
 from application import app 
 
 
-class Test_mod_products(unittest.TestCase):
+class Test_routes(unittest.TestCase):
 
     @classmethod
     def setUpClass(self):   
@@ -43,6 +43,7 @@ class Test_mod_products(unittest.TestCase):
         self.client.post('/api/v1/parcels', data=json.dumps(self.parcel_order), content_type="application/json")
         self.client.post('/api/v1/parcels', data=json.dumps(self.parcel_order2), content_type="application/json")
         self.client.post('/api/v1/signup', data=json.dumps({'username':'timo','password':'1234','email':'timo@gmail.com'}), content_type="application/json")
+        self.client.post('/api/v1/login', data=json.dumps({'username':'timo','password':'1234'}), content_type="application/json")
 
     @classmethod
     def tearDownClass(self):
@@ -69,6 +70,11 @@ class Test_mod_products(unittest.TestCase):
         resp_data = json.loads(rv.data.decode())
         self.assertEqual(resp_data['message'],'Logged in')
 
+    def test_logout(self):
+        rv =self.client.get('api/v1/logout')
+        self.assertEqual(rv.status_code,200)
+        resp = json.loads(rv.data.decode())
+        self.assertEqual(resp['message'],'You have logged out successfully!')
     ### tests for products first
     def test_get_all_orders(self):
         rv = self.client.get('/api/v1/parcels')

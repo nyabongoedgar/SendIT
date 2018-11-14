@@ -6,7 +6,7 @@ class User:
 
     def __init__(self):
         self.users = []
-        
+        self.logged_in = []
     
     def signup(self,user_id,username,password,email):
         for i in self.users:
@@ -20,9 +20,15 @@ class User:
     def login(self,username,password):
         for i in self.users:
             if (i['username'] == username and i['password'] == password):
-                return jsonify({'message':'Logged in'})
+                user_id = i['user_id']
+                self.logged_in.append(user_id)
+                return jsonify({'message':'Logged in'}),200            
         return jsonify({'message':'Invalid credentials'}),400
 
+    def logout(self):
+        if len(self.logged_in) is not None:
+            self.logged_in.remove(self.logged_in[0])
+            return jsonify({'message':'You have logged out successfully!'}),200
 
 
 class Parcel:
