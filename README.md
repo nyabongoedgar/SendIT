@@ -1,17 +1,10 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-App hosted on Heroku at https://sendinc.herokuapp.com/api/v1/
-=======
-App hosted on Heroku at https://sendinc.herokuapp.com/api/v1/   
->>>>>>> ft-challenge-two
+App hosted on Heroku at https://sendinc.herokuapp.com/api/v1/          
+br>
 User interface hosted at https://nyabongoedgar.github.io/SendIT/UI/
 <br>
 [![Coverage Status](https://coveralls.io/repos/github/nyabongoedgar/SendIT/badge.svg?branch=ft-develop)](https://coveralls.io/github/nyabongoedgar/SendIT?branch=develop)
 [![Build Status](https://travis-ci.org/nyabongoedgar/SendIT.svg?branch=develop)](https://travis-ci.org/nyabongoedgar/SendIT)<a href="https://codeclimate.com/github/nyabongoedgar/SendIT/maintainability"><img src="https://api.codeclimate.com/v1/badges/de8d6ff5a0fdf45eba8c/maintainability" /></a>
-<<<<<<< HEAD
 
-=======
->>>>>>> ft-challenge-two
 <h1> Getting Started </h1>
 <h2> Pre-requisites </h2>
 
@@ -19,7 +12,7 @@ User interface hosted at https://nyabongoedgar.github.io/SendIT/UI/
   
 
 <h2>Preparing development environment</h2>
-<ul><li>Make a directory named Store-Manager<br>
+<ul><li>Make a directory named SendIT<br>
   $ mkdir SendIT <br>
   $ cd ~/SendIT
   </li>
@@ -30,7 +23,7 @@ User interface hosted at https://nyabongoedgar.github.io/SendIT/UI/
   
 <li>Clone git repository <br>
   $ git clone https://github.com/nyabongoedgar/SendIT.git</li>
-<li>Switch to "ft-challenge-two" branch</li>
+<li>Switch to "develop" branch</li>
   <li>Install necessary requirements<br>
   $ pip install -r requirements.txt </li>
 <li>Run the main app file <br>
@@ -62,19 +55,3 @@ User interface hosted at https://nyabongoedgar.github.io/SendIT/UI/
 
 <tr><td>POST /parcels</td>	<td>Create a parcel delivery order</td>	</tr>
 
-<<<<<<< HEAD
-</table>  
-=======
-<h1>Project Overview</h1>
-<p>SendIT is a courier service that helps users to deliver parcels to different destinations. SendIT provides courier quotes based on weight categories.</p>
-<h2>User Interface Features</h2>
-<ol><li>	Users can create an account and log in. </li>	
-<li>Users can create a parcel delivery order. </li>	
-<li>Users can change the destination of a parcel delivery order. </li>	
-<li>	Users can cancel a parcel delivery order. </li>	
-<li>	Users can see the details of a delivery order. </li>	
-<li>	Admin can change the status and present location of a parcel delivery order. </li>	</ol>
->>>>>>> ft-challenge-one
-=======
-</table>  
->>>>>>> ft-challenge-two
