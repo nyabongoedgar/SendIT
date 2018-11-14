@@ -22,7 +22,7 @@ def signup():
     email = data.get('email')
     validate_data = Helpers.validate_strings([username,password,email])
     if validate_data is not None:
-        return jsonify({'message':'username,email and password required. '+a}),400
+        return jsonify({'message':'username,email and password required. '+ validate_data}),400
     generated_id = Helpers.gen_id(user_object.users,"user_id")
     return user_object.signup(generated_id,username,password,email)
 
@@ -34,21 +34,12 @@ def signin():
     password = data.get('password')
     validate_data = Helpers.validate_strings([username,password])
     if validate_data is not None:
-        return jsonify({'message':b}),400
+        return jsonify({'message':validate_data}),400
     return user_object.login(username,password)
 
 @mod.route('/logout')
 def logout():
     return user_object.logout()
-
-@mod.route('/promote', methods=['POST'])
-def promote():
-    data = request.get_json()
-    username = data.get('username')
-    validate_username = Helpers.validate_strings([username])
-    if validate_username is not None:
-        return jsonify({'message':validate_username}),400
-    return user_object.promote(username)
 
 #Create a parcel delivery order
 @mod.route("/parcels", methods=['POST'])

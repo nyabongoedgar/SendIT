@@ -25,12 +25,7 @@ class User:
                 return jsonify({'message':'Logged in'}),200            
         return jsonify({'message':'Invalid credentials'}),400
     
-    def promote(self,username):
-        for i in self.users:
-            if i['username'] == username:
-                i['admin'] = True
-            return jsonify({'message':username + 'promoted to admin'}),200
-        return jsonify({'message':'failed to promote '+ username}),400
+    
 
     def logout(self):
         if len(self.logged_in) is not None:
