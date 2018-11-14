@@ -136,7 +136,9 @@ class Test_routes(unittest.TestCase):
         wrong_data = self.client.get('/api/v1/users/30/parcels?key=mysimpleapikey')
         response2 = json.loads(wrong_data.data.decode())
         self.assertEqual(response2['message'],'No orders for this user') 
-        self.assertEqual(wrong_data.status_code,200) 
+        self.assertEqual(wrong_data.status_code,200)
+        wrong_api_key = self.client.get('api/v1/users/1/parcels?key=peoplepower')
+        self.assertEqual(wrong_api_key.status_code,401)
 
 if __name__ == "__main__":
     unittest.main()
