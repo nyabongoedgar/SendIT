@@ -10,7 +10,7 @@ User interface hosted at https://nyabongoedgar.github.io/SendIT/UI/
   
 
 <h2>Preparing development environment</h2>
-<ul><li>Make a directory named Store-Manager<br>
+<ul><li>Make a directory named SendIT<br>
   $ mkdir SendIT <br>
   $ cd ~/SendIT
   </li>
