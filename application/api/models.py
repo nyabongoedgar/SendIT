@@ -15,7 +15,7 @@ class User:
         new_user  = {"user_id":user_id,"username":username, "password":password,'email':email,"admin":False}
 
         self.users.append(new_user)
-        return jsonify({'user created':self.users}),201
+        return jsonify({'message':'Your user accoutn has been created'}),201
 
     def login(self,username,password):
         for i in self.users:

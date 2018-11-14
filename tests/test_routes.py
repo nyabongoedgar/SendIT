@@ -54,6 +54,9 @@ class Test_routes(unittest.TestCase):
         self.assertEqual(rv.status_code, 200)
     def test_signup(self):
         rv = self.client.post('/api/v1/signup', data=json.dumps({'username':'eddie','password':'1234','email':'eddie@gmail.com'}), content_type="application/json")
+        self.assertEqual(rv.status_code,201)
+        resp_right = json.loads(rv.data.decode())
+        self.assertEqual(resp_right['message'],'Your user accoutn has been created') 
         wrong_data = self.client.post('api/v1/signup', data=json.dumps({'username':678,'password':8492,'email':470}), content_type="application/json")
         response = json.loads(wrong_data.data.decode())
         self.assertEqual(wrong_data.status_code,400)
