@@ -51,3 +51,15 @@ class Test_data_mod(unittest.TestCase):
         self.assertEqual(x,'Data provided should be an integer and should not be a positive number')
         self.assertEqual(z,None) 
         self.assertEqual(y,'Data provided should be an integer and should not be a positive number')
+    
+    def test_check_if_exist(self):
+        listx = [{
+        "parcel_name":"phone",
+        "parcel_source":"Bukoto",
+        "parcel_destination":"Makindye",
+        "parcel_weight":0,
+        "receiver_name":"Kenneth",
+        "receiver_telephone":"0779865557",
+        "parcel_description":"This parcel contains a blue blackberry c23 smartphone"}]
+        args = {"parcel_description":"This parcel contains a blue blackberry c23 smartphone","parcel_destination":"Makindye","parcel_weight":0,"parcel_name":"phone"}
+        self.assertEqual(Helpers.check_if_exists(args,listx),'Parcel order delivery already placed, please make a unique order')   

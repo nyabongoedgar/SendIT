@@ -70,35 +70,48 @@ def create_parcel_delivery_order():
     source = data.get('parcel_source')
     destination = data.get('parcel_destination')
     date_created = str(datetime.datetime.utcnow())
-    weight = int(data.get('parcel_weight'))
+    parcel_weight = int(data.get('parcel_weight'))
     receiver_name =data.get('receiver_name')
     receiver_telephone =data.get('receiver_telephone')
+    description = data.get('parcel_description')
     delivered = False
     status = 'pending'
-    price = Helpers.gen_price(weight)
-    validate_int = Helpers.validate_integer([weight,price])
+    price = Helpers.gen_price(parcel_weight)
+    validate_int = Helpers.validate_integer([parcel_weight,price])
     if validate_int is not None:
         return jsonify({'message':validate_int}),400
     validate_string = Helpers.validate_strings([name,source,destination,date_created])
     if validate_string is not None:
         return jsonify({'message':validate_string}),400   
-    order = {'parcel_id':pid, 'parcel_name':name, 'source':source,'destination':destination,'weight':weight, 'receiver_name':receiver_name, 'receiver_telephone':receiver_telephone,'price':price,'date_created':date_created,'status':status, 'delivered':delivered,'user_id':user_id}  
+    order = {'parcel_id':pid, 'parcel_name':name,'parcel_description':description, 'parcel_source':source,'parcel_destination':destination,'parcel_weight':parcel_weight, 'receiver_name':receiver_name, 'receiver_telephone':receiver_telephone,'price_quote':price,'date_created':date_created,'status':status, 'delivered':delivered,'user_id':user_id}
+    check_for_similar_order = Helpers.check_if_exists(args=order,myList=parcel_object.parcels)
+    if check_for_similar_order is not None:
+        return jsonify({'message':check_for_similar_order}),400
+      
     return parcel_object.create_parcel_order_delivery(order)
 
 #Fetch all parcels records '''
 @mod.route('/parcels', methods= ['GET'])
 def get_all_parcels():
+    if len(user_object.logged_in) is 0:
+        return jsonify({'message':'Login is required !'}),401
+    if len(user_object.logged_in) is 0:
+        return jsonify({'message':'Login is required !'}),401
     return parcel_object.get_all_parcels()
            
 
 #Fetch a single parcel record
 @mod.route("/parcels/<int:parcelId>", methods= ['GET'])
 def get_one_sale(parcelId):
+    if len(user_object.logged_in) is 0:
+        return jsonify({'message':'Login is required !'}),401
     return parcel_object.get_one_parcel(parcelId)
 
 #route for cancelling a parcel order
 @mod.route("/parcels/<int:parcelId>/cancel", methods=['PUT'])
 def cancel_order(parcelId):
+    if len(user_object.logged_in) is 0:
+        return jsonify({'message':'Login is required !'}),401
     check_order = Helpers.search(parcel_object.parcels,parcelId,'parcel_id')
     if check_order is None:
         return jsonify({'message':'parcel with parcel id of ' + str(parcelId) + ' doesnot exist'}),400

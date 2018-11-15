@@ -54,3 +54,12 @@ class Helpers:
 		    if i[key] == parcelId:
 			    i['status'] = new_entry
 	    return i
+
+    @staticmethod
+    def check_if_exists(args,myList):
+        for item in myList:
+            if ( item['parcel_name'] == args['parcel_name'] and item['parcel_description'] == args['parcel_description']
+                 and item ['parcel_weight'] == args['parcel_weight']  and item['parcel_destination'] == args['parcel_destination'] ):
+                return 'Parcel order delivery already placed, please make a unique order'
+
+    

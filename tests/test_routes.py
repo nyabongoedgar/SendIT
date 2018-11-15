@@ -12,7 +12,8 @@ class Test_routes(unittest.TestCase):
         "parcel_destination":"Kamwokya",
         "parcel_weight":20,
         "receiver_name":"Kenneth",
-        "receiver_telephone":"0779865557"
+        "receiver_telephone":"0779865557",
+        "description":"This parcel contains a black bag with 50 pieces of soap "
         }
         self.parcel_order2 = {
         "parcel_name":"phone",
@@ -20,15 +21,17 @@ class Test_routes(unittest.TestCase):
         "parcel_destination":"KaMakindyemwokya",
         "parcel_weight":20,
         "receiver_name":"Kenneth",
-        "receiver_telephone":"0779865557"
+        "receiver_telephone":"0779865557",
+        "description":"This parcel contains an Iphone X with a 7 inch screen"
         }
         self.parcel_order3 = {
         "parcel_name":"phone",
         "parcel_source":"Bukoto",
-        "parcel_destination":"KaMakindyemwokya",
+        "parcel_destination":"Makindye",
         "parcel_weight":0,
         "receiver_name":"Kenneth",
-        "receiver_telephone":"0779865557"
+        "receiver_telephone":"0779865557",
+        "parcel_description":"This parcel contains a blue blackberry c23 smartphone"
         }
         self.parcel_order4 = {
         "parcel_name":658,
@@ -36,14 +39,15 @@ class Test_routes(unittest.TestCase):
         "parcel_destination":"KaMakindyemwokya",
         "parcel_weight":30,
         "receiver_name":"Kenneth",
-        "receiver_telephone":"0779865557"
+        "receiver_telephone":"0779865557",
+        "parcel_description":"This parcel contains a number"
         }
     
         self.client = app.test_client()
         self.client.post('/api/v1/parcels', data=json.dumps(self.parcel_order), content_type="application/json")
         self.client.post('/api/v1/parcels', data=json.dumps(self.parcel_order2), content_type="application/json")
         self.client.post('/api/v1/signup', data=json.dumps({'username':'timo','password':'1234','email':'timo@gmail.com'}), content_type="application/json")
-        self.client.post('/api/v1/login', data=json.dumps({'username':'timo','password':'1234'}), content_type="application/json")
+        
 
     @classmethod
     def tearDownClass(self):
@@ -74,12 +78,17 @@ class Test_routes(unittest.TestCase):
         self.assertEqual(resp_data['message'],'Logged in')
 
     def test_logout(self):
+        self.client.post('/api/v1/login', data=json.dumps({'username':'timo','password':'1234'}), content_type="application/json")
         rv =self.client.get('api/v1/logout')
         self.assertEqual(rv.status_code,200)
         resp = json.loads(rv.data.decode())
         self.assertEqual(resp['message'],'You have logged out successfully!')
     ### tests for products first
     def test_get_all_orders(self):
+        self.client.get('api/v1/logout')
+        without_login = self.client.get('/api/v1/parcels')
+        self.assertEqual(without_login.status_code,401)
+        self.client.post('/api/v1/login', data=json.dumps({'username':'timo','password':'1234'}), content_type="application/json")
         rv = self.client.get('/api/v1/parcels')
         self.assertEqual(rv.status_code, 200)
         resp_data = json.loads(rv.data.decode())
@@ -88,6 +97,10 @@ class Test_routes(unittest.TestCase):
              self.assertIn('user_id',i)  
        
     def test_create_parcel_delivery_order(self):
+        self.client.get('api/v1/logout')
+        without_login = self.client.get('/api/v1/parcels')
+        self.assertEqual(without_login.status_code,401)
+        self.client.post('/api/v1/login', data=json.dumps({'username':'timo','password':'1234'}), content_type="application/json")
         rv = self.client.post('/api/v1/parcels', data=json.dumps(self.parcel_order2), content_type="application/json")
         self.assertEqual(rv.status_code, 201)
         resp_data = json.loads(rv.data.decode())
@@ -104,14 +117,22 @@ class Test_routes(unittest.TestCase):
         self.assertEqual(response2['message'],'Data provided should be a string and should not be a space')  
 
     def test_get_one_order(self):
+        self.client.get('api/v1/logout')
+        without_login = self.client.get('/api/v1/parcels')
+        self.assertEqual(without_login.status_code,401)
+        self.client.post('/api/v1/login', data=json.dumps({'username':'timo','password':'1234'}), content_type="application/json")
         rv = self.client.get('/api/v1/parcels/1')
         self.assertEqual(rv.status_code, 200)
         resp_data = json.loads(rv.data.decode())
-        self.assertEqual(len(resp_data),12)
+        self.assertEqual(len(resp_data),13)
         self.assertEqual(resp_data['parcel_id'],1)
         self.assertEqual(resp_data['user_id'],1)    
 
     def test_cancel_order(self):
+        self.client.get('api/v1/logout')
+        without_login = self.client.get('/api/v1/parcels')
+        self.assertEqual(without_login.status_code,401)
+        self.client.post('/api/v1/login', data=json.dumps({'username':'timo','password':'1234'}), content_type="application/json")
         self.client.post('/api/v1/parcels', data=json.dumps(self.parcel_order), content_type="application/json")
         rv = self.client.put('/api/v1/parcels/1/cancel', data = json.dumps({'status':'cancelled'}), content_type="application/json" )
         self.assertEqual(rv.status_code,201)
