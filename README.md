@@ -12,7 +12,7 @@ User interface hosted at https://nyabongoedgar.github.io/SendIT/UI/
 <p>To signin, visit, https://sendinc.herokuapp.com/api/v1/login and provide the "username" and the "password" you used to create the account.</p>
 <p>To logout, visit, https://sendinc.herokuapp.com/api/v1/logout with a get method</p>
 <h2>Protected endpoint</h2>
-<p> GET /users/userId/parcels, is a PROTECTED route, it using a n API KEY for authentiaction, to pass in the api key, pass it as an argument to the URL.<br>  the api key is <b> mysimpleapikey </b> <br>
+<p> GET /users/userId/parcels, is a PROTECTED route, it uses an API KEY for authentication, to pass in the api key, pass it as an argument to the URL.<br>  the api key is <b> mysimpleapikey </b> <br>
 To use it, do as follows, https://sendinc.herokuapp.com/api/v1/users/userId/parcels?key=mysimpleapikey </p>
 <ol>
 <li>GET /parcels, accessible at https://sendinc.herokuapp.com/api/v1/parcels </li>
