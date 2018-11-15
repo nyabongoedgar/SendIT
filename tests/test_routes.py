@@ -98,6 +98,9 @@ class Test_routes(unittest.TestCase):
        
     def test_create_parcel_delivery_order(self):
         self.client.get('api/v1/logout')
+        rv3 = self.client.post('/api/v1/parcels', data=json.dumps(self.parcel_order), content_type="application/json")
+        resp_data3 = json.loads(rv3.data.decode())
+        self.assertEqual(resp_data3['message'],'Login is required !')
         without_login = self.client.get('/api/v1/parcels')
         self.assertEqual(without_login.status_code,401)
         self.client.post('/api/v1/login', data=json.dumps({'username':'timo','password':'1234'}), content_type="application/json")
@@ -106,7 +109,12 @@ class Test_routes(unittest.TestCase):
         resp_data = json.loads(rv.data.decode())
         self.assertEqual(resp_data['message'],'parcel order delivery placed')
         self.assertEqual(resp_data['status'],'success')
-        #invalid data type
+        #sending for similar order already placed
+        rv2 = self.client.post('/api/v1/parcels', data=json.dumps(self.parcel_order2), content_type="application/json")
+        resp_data2 = json.loads(rv2.data.decode())
+        self.assertEqual(resp_data2['message'],'Parcel order delivery already placed, please make a unique order')
+        
+       
         wrong_data = self.client.post('/api/v1/parcels', data=json.dumps(self.parcel_order3), content_type="application/json")
         self.assertEqual(wrong_data.status_code,400)
         response = json.loads(wrong_data.data.decode())
@@ -118,6 +126,9 @@ class Test_routes(unittest.TestCase):
 
     def test_get_one_order(self):
         self.client.get('api/v1/logout')
+        rv3 = self.client.get('/api/v1/parcels/1')
+        resp_data3 = json.loads(rv3.data.decode())
+        self.assertEqual(resp_data3['message'],'Login is required !')
         without_login = self.client.get('/api/v1/parcels')
         self.assertEqual(without_login.status_code,401)
         self.client.post('/api/v1/login', data=json.dumps({'username':'timo','password':'1234'}), content_type="application/json")
@@ -130,6 +141,9 @@ class Test_routes(unittest.TestCase):
 
     def test_cancel_order(self):
         self.client.get('api/v1/logout')
+        rv3 = self.client.post('/api/v1/parcels', data=json.dumps({'username':'timo','password':'1234'}), content_type="application/json")
+        resp_data3 = json.loads(rv3.data.decode())
+        self.assertEqual(resp_data3['message'],'Login is required !')
         without_login = self.client.get('/api/v1/parcels')
         self.assertEqual(without_login.status_code,401)
         self.client.post('/api/v1/login', data=json.dumps({'username':'timo','password':'1234'}), content_type="application/json")

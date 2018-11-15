@@ -95,8 +95,6 @@ def create_parcel_delivery_order():
 def get_all_parcels():
     if len(user_object.logged_in) is 0:
         return jsonify({'message':'Login is required !'}),401
-    if len(user_object.logged_in) is 0:
-        return jsonify({'message':'Login is required !'}),401
     return parcel_object.get_all_parcels()
            
 
