@@ -13,7 +13,7 @@ class Test_routes(unittest.TestCase):
         "parcel_weight":20,
         "receiver_name":"Kenneth",
         "receiver_telephone":"0779865557",
-        "description":"This parcel contains a black bag with 50 pieces of soap "
+        "parcel_description":"This parcel contains a black bag with 50 pieces of soap "
         }
         self.parcel_order2 = {
         "parcel_name":"phone",
@@ -22,7 +22,7 @@ class Test_routes(unittest.TestCase):
         "parcel_weight":20,
         "receiver_name":"Kenneth",
         "receiver_telephone":"0779865557",
-        "description":"This parcel contains an Iphone X with a 7 inch screen"
+        "parcel_description":"This parcel contains an Iphone X with a 7 inch screen"
         }
         self.parcel_order3 = {
         "parcel_name":"phone",
