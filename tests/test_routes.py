@@ -141,7 +141,7 @@ class Test_routes(unittest.TestCase):
 
     def test_cancel_order(self):
         self.client.get('api/v1/logout')
-        rv3 = self.client.post('/api/v1/parcels', data=json.dumps({'username':'timo','password':'1234'}), content_type="application/json")
+        rv3 = self.client.put('/api/v1/parcels/1/cancel', data=json.dumps({'username':'timo','password':'1234'}), content_type="application/json")
         resp_data3 = json.loads(rv3.data.decode())
         self.assertEqual(resp_data3['message'],'Login is required !')
         without_login = self.client.get('/api/v1/parcels')
