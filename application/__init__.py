@@ -1,9 +1,9 @@
 from flask import Flask, Blueprint
 app = Flask(__name__)
 
-from application.api.routes import mod
+from application.api.views import mod
 
-app.register_blueprint(api.routes.mod)
+app.register_blueprint(api.views.mod)
 
 
 

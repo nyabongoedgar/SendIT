@@ -149,7 +149,7 @@ class Test_routes(unittest.TestCase):
         self.client.post('/api/v1/login', data=json.dumps({'username':'timo','password':'1234'}), content_type="application/json")
         self.client.post('/api/v1/parcels', data=json.dumps(self.parcel_order), content_type="application/json")
         rv = self.client.put('/api/v1/parcels/1/cancel', data = json.dumps({'status':'cancelled'}), content_type="application/json" )
-        self.assertEqual(rv.status_code,201)
+        self.assertEqual(rv.status_code,201)#200
         wrong_data1 = self.client.put('/api/v1/parcels/300/cancel', data = json.dumps({'status':'cancelled'}), content_type="application/json" )
         self.assertEqual(wrong_data1.status_code,400)
         response1 = json.loads(wrong_data1.data.decode())

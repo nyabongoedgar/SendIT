@@ -29,6 +29,7 @@ def index():
 
 #Account creation route
 @mod.route('/signup', methods=['POST'])
+
 def signup():
     data = request.get_json()
     username = data.get('username')
