@@ -41,8 +41,8 @@ class DatabaseConnection:
         user = self.cursor.fetchone()
         return user
 
-    def create_users(self,username, email, password):
-        create_user = " ' INSERT INTO users(username, email, password) VALUES(%s, %s, %s) ', (username, email, password) "
+    def create_users(self,username, email, password,admin):
+        create_user = " ' INSERT INTO users(username, email, password, admin) VALUES(%s, %s, %s, %s) ', (username, email, password,admin) "
         self.cursor.execute(create_user)
     
     def login(self, username, password):

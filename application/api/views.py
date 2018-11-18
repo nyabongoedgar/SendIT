@@ -31,7 +31,10 @@ def index():
  
 @mod.route('/auth/signup', methods = ['POST'])
 def signup():
-    pass
+    data = request.get_json()
+    hashed_password = generate_password_hash(data['password'])
+    conn.create_users(data['username'],data['email'],data['password'],False)
+    return jsonify({'message':'new user created'}),201 
 
 @mod.route("/auth/login", methods=['POST'])
 def login():
