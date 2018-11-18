@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request 
-import jwt, psycopg2
+import jwt, psycopg2, datetime
 from functools import wraps
+from werkzeug.security import generate_password_hash, check_password_hash
 from db import DatabaseConnection 
 mod = Blueprint('Parcel',__name__, url_prefix='/api/v1/')
 
@@ -16,11 +17,12 @@ def token_required(f):
             return jsonify({'message':'Token is missing !'}),401
         try:
             data = jwt.decode(token,app.config['SECRET_KEY'])
-            current_user = conn.check_user(data)
+            current_user = conn.get_user_id(data)
         except:
             return jsonify({'message':'Token is required'}),401
            
-    return f(current_user, *args, **kwargs)
+        return f(current_user, *args, **kwargs)
+    return decorated
  
 @mod.route('/')
 def index():
@@ -28,12 +30,20 @@ def index():
 
  
 @mod.route('/auth/signup', methods = ['POST'])
-def sigup():
+def signup():
     pass
 
 @mod.route("/auth/login", methods=['POST'])
 def login():
-    pass
+    auth = request.headers
+    if not auth or not auth.username or not auth.password:
+        return make_response('coul not verify',401,{'WWW-Authentication':'Basic realm = "Login required !"'})
+    user = conn.user(auth.username)
+    if not user:
+        return make_response('coul not verify',401,{'WWW-Authentication':'Basic realm = "Login required !"'})
+    if check_password_hash(user['password'],auth.password):
+        token = jwt.encode({'user_id':user['user_id'], 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'])
+        return jsonify({'token':token.decode('UTF-8')}),200
 
 @mod.route('/parcels', methods=['POST'])
 def make_order():

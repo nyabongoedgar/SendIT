@@ -1,4 +1,5 @@
 import psycopg2
+import psycopg2.extras
 import os
 
 
@@ -8,15 +9,16 @@ class DatabaseConnection:
        
 
         try:
-            self.connection = psycopg2.connect(
-                dbname='d62ol3dfvvnubk', user='rkgsgupxsprnfx', host='ec2-174-129-236-147.compute-1.amazonaws.com', password='77c80267f50cfc06bf5f8d89b27bf08df304c9c11c6c70c6337193fa77605a12', port='5432'
-            )
+            db_credentials = """
+		    dbname='sendit' user='postgres' password='password'
+	        host='localhost' port='5432'  """
+            self.connection = psycopg2.connect(db_credentials)
 
             self.connection.autocommit = True
-            self.cursor = self.connection.cursor()
+            self.cursor = self.connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
             print ('Database connected.')
-            users_table_sql = "CREATE TABLE IF NOT EXISTS users (user_id SERIAL PRIMARY KEY, username VARCHAR(80) NOT NULL, email VARCHAR(100) NOT NULL, password TEXT NOT NULL);"
+            users_table_sql = "CREATE TABLE IF NOT EXISTS users (user_id SERIAL PRIMARY KEY, username VARCHAR(80) NOT NULL, email VARCHAR(100) NOT NULL, password TEXT NOT NULL, admin Boolean NOT NULL);"
             parcels_orders_table_sql = "CREATE TABLE IF NOT EXISTS parcel_orders (parcel_id UUID NOT NULL, user_id INTEGER REFERENCES users(user_id), parcel_description TEXT NOT NULL, parcel_weight INTEGER NOT NULL, price_quote NUMBER, parcel_source VARCHAR (255) NOT NULL, parcel_destination VARCHAR (255) NOT NULL, receiver_name VARCHAR (100) NOT NULL, receiver_telephone VARCHAR(10) NOT NULL, date_created TIMESTAMP NOT NULL,current_location VARCHAR(200),status VARCHAR(30), PRIMARY_KEY(parcel_id,user_id));"
 
             # self.cursor.execute(SET timezone = 'Nairobi')
@@ -27,8 +29,14 @@ class DatabaseConnection:
         except:
             print('Cannot connect to the database.')
 
-    def check_user(self, user_id):
-        sql = " ' SELECT * FROM users WHERE user_id=%s',(user_id,)"
+    def get_user_id(self, user_id):
+        sql = " ' SELECT user_id FROM users WHERE user_id=%s',(user_id,)"
+        self.cursor.execute(sql)
+        userId = self.cursor.fetchone()
+        return userId
+
+    def user(self, username):
+        sql = " ' SELECT * FROM users WHERE user_name=%s',(user_name,)"
         self.cursor.execute(sql)
         user = self.cursor.fetchone()
         return user
