@@ -48,7 +48,7 @@ def login():
     user = conn.user(username)
     if not user:
         return jsonify({'message':'Verification of credentials failed !'}),401
-    if check_password_hash(user['password'],auth.password):
+    if check_password_hash(user['password'],data['password']):
         token = jwt.encode({'user_id':user['user_id'], 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'])
         return jsonify({'token':token.decode('UTF-8')}),200
 
