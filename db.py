@@ -29,38 +29,39 @@ class DatabaseConnection:
             print('Cannot connect to the database.')
 
     def get_user_id(self, user_id):
-        sql = " ' SELECT user_id FROM users WHERE user_id=%s',(user_id,)"
+        sql = "SELECT user_id FROM users WHERE user_id='{}' ".format(user_id)
         self.cursor.execute(sql)
         userId = self.cursor.fetchone()
         return userId
 
     def user(self, username):
-        sql = " ' SELECT * FROM users WHERE user_name=%s',(user_name,)"
+        sql = "SELECT * FROM users WHERE username='{}'".format(username)
         self.cursor.execute(sql)
         user = self.cursor.fetchone()
         return user
 
-    def create_users(self,username, email, password,admin):
-        create_user = " ' INSERT INTO users(username, email, password, admin) VALUES(%s, %s, %s, %s) ', (username, email, password,admin) "
+    def create_users(self,username, email, password,admin=False):
+        create_user = "INSERT INTO users(username, email, password, admin) VALUES('{}', '{}', '{}', '{}')".format(username, email, password,admin)
         self.cursor.execute(create_user)
     
     def login(self, username, password):
-        sql = " 'SELECT * FROM users WHERE username=%s and password = %s',(username,password)"
+        sql = "SELECT * FROM users WHERE username='{}' and password = '{}'".format(username,password)
         self.cursor.execute(sql)
         user = self.cursor.fetchone()
-        return user
+        rowcount = self.cursor.rowcount
+		print(rowcount)
 
     def create_parcel_order(self,parcel_id,parcel_description,parcel_weight,parcel_source,parcel_destination,receiver_name,receiver_telephone,date_created,current_location,status):
-        sql = " ' INSERT INTO parcel_orders(parcel_id,parcel_description,parcel_weight,parcel_source,parcel_destination,receiver_name,receiver_telephone,date_created,current_location,status) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s) ',(parcel_id,parcel_description,parcel_weight,parcel_source,parcel_destination,receiver_name,receiver_telephone,date_created,current_location,status) "
+        sql = "INSERT INTO parcel_orders(parcel_id,parcel_description,parcel_weight,parcel_source,parcel_destination,receiver_name,receiver_telephone,date_created,current_location,status) VALUES('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}') ".format(parcel_id,parcel_description,parcel_weight,parcel_source,parcel_destination,receiver_name,receiver_telephone,date_created,current_location,status)
         self.cursor.execute(sql)
 
     def change_parcel_destination(self, new_destination, parcel_id):
-        sql = " 'UPDATE table parcel_orders SET parcel_destination = %s WHERE parcel_id = %s',(new_destination,parcel_id) "
+        sql = "UPDATE table parcel_orders SET parcel_destination = '{}' WHERE parcel_id = '{}'".format(new_destination,parcel_id)
         self.cursor.execute(sql) 
 
 
     def get_user_parcel_orders(self, user_id):
-        sql = " ' SELECT * FROM parcel_orders WHERE user_id=%s',(user_id,) "
+        sql = "SELECT * FROM parcel_orders WHERE user_id='{}'".format(user_id)
         self.cursor.execute(sql)
         return answers
     
@@ -73,11 +74,11 @@ class DatabaseConnection:
         return question
 
     def change_parcel_status(self, new_status, parcel_id):
-        sql = " ' UPDATE table parcel_orders SET status = %s WHERE parcel_id = %s ',(new_status,parcel_id) "
+        sql = "UPDATE table parcel_orders SET status = '{}' WHERE parcel_id = '{}' ".format(new_status,parcel_id)
         self.cursor.execute(sql)
 
     def change_parcel_current_location(self, new_location, parcel_id):
-        sql = " ' UPDATE table parcel_orders SET current_location =%s WHERE parcel_id = %s',(new_location,parcel_id) "
+        sql = "UPDATE table parcel_orders SET current_location ='{}' WHERE parcel_id = '{}'".format(new_location,parcel_id) 
         self.cursor.execute(sql)    
     
 
@@ -90,3 +91,5 @@ class DatabaseConnection:
 
 if __name__ == '__main__':
     conn = DatabaseConnection()
+     
+    conn.login("TIMO", "CLEVER")
