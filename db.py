@@ -1,6 +1,6 @@
 import psycopg2
 import psycopg2.extras
-import os
+import os, datetime
 
 
 class DatabaseConnection:
@@ -50,7 +50,10 @@ class DatabaseConnection:
         return user
 
 
-    def create_parcel_order(self,parcel_id,parcel_description,parcel_weight,parcel_source,parcel_destination,receiver_name,receiver_telephone,date_created,current_location,status):
+    def create_parcel_order(self,parcel_description,parcel_weight,parcel_source,parcel_destination,receiver_name,receiver_telephone,current_location,status):
+        data_created = datetime.datetime.utcnow()
+        sql = "INSERT INTO parcel_orders(parcel_id,parcel_description,parcel_weight,parcel_source,parcel_destination,receiver_name,receiver_telephone,date_created,current_location,status) VALUES('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}') ".format(parcel_description,parcel_weight,parcel_source,parcel_destination,receiver_name,receiver_telephone,date_created,current_location,status)
+
         sql = "INSERT INTO parcel_orders(parcel_id,parcel_description,parcel_weight,parcel_source,parcel_destination,receiver_name,receiver_telephone,date_created,current_location,status) VALUES('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}') ".format(parcel_id,parcel_description,parcel_weight,parcel_source,parcel_destination,receiver_name,receiver_telephone,date_created,current_location,status)
         self.cursor.execute(sql)
 
@@ -72,6 +75,7 @@ class DatabaseConnection:
         question = self.cursor.fetchall()
         return question
 
+   
     def change_parcel_status(self, new_status, parcel_id):
         sql = "UPDATE table parcel_orders SET status = '{}' WHERE parcel_id = '{}' ".format(new_status,parcel_id)
         self.cursor.execute(sql)

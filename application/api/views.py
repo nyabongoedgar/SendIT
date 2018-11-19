@@ -32,13 +32,16 @@ def index():
 @mod.route('/auth/signup', methods = ['POST']) 
 def register_user():
     data = request.get_json()
-    conn_object.register_user(data['username'],data['email'],data['password'],False)
+    password = data['password']
+    username,email = data['username'],data['email']
+    hashed_pasword = generate_password_hash(password, method='sha256')
+    conn_object.register_user(username,email,password,False)
     return jsonify({'message':'User registered successfully'}),201
     
     
 
 @mod.route("/auth/login", methods=['POST'])
-def login(current_user): 
+def login(): 
     data = request.get_json() 
     if not data or not data['username'] or not data['password']:
         return jsonify({'message':'Verification of credentials failed !'}),401
@@ -52,24 +55,32 @@ def login(current_user):
 @mod.route('/parcels', methods=['POST'])
 @token_required
 def make_order(current_user):
-    pass
+    data = request.get_json()
+    return conn_object.create_parcel_order(data['parcel_description'],data['parcel_weight'],data['parcel_source'],data,data['receiver_name'],data['receiver_telephone'],data['current_location'],data['status'])
 
 
 @mod.route('/parcels', methods=['GET'])
 @token_required
 def get_all_orders():
-    pass
+    return conn_object.get_all_parcel_orders()
 
 
 @mod.route('/parcels/<int:parcelId>/destination', methods=['PUT '])
 def change_destination(current_user,parcelId):
-    pass
+    data = request.get_json()
+    new_destination = data['destination']
+    return conn.object.change_parcel_destination(new_destination,parcelId)
+
 @mod.route('/parcels/<int:parcelId>/status', methods=['PUT '])
 @token_required
 def status(current_user,parcelId):
-    pass
+    data = request.get_json()
+    new_status = data['status']
+    return conn_object.change_parcel_status(new_status,parcelId)
 
 @mod.route('/parcels/<int:parcelId>/presentLocation',methods=['PUT'])
 @token_required
 def change_present_location(current_user,parcelId):
-    pass
+    data = request.get_json()
+    present_location = data['present_location']
+    return change_parcel_current_location(present_location,parcelId)
