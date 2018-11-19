@@ -3,9 +3,10 @@ import jwt, psycopg2, datetime
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
 from db import DatabaseConnection
-from db import conn 
+ 
 mod = Blueprint('Parcel',__name__, url_prefix='/api/v1/')
 
+conn_object = DatabaseConnection()
 
 def token_required(f):
     @wraps(f)
@@ -29,36 +30,25 @@ def index():
     return jsonify({'message':'SendIT application'}),200
  
 @mod.route('/auth/signup', methods = ['POST']) 
-def register_user():
+def register_user(current_user):
     data = request.get_json()
-    try:
-        hashed_password = generate_password_hash(data['password'])
-        conn.create_users(data['username'],data['email'],hashed_password,False)
-        responseObject = {'message': 'Successfully registered.' } 
-        return make_response(jsonify(responseObject)), 201
-
-    except Exception as e:
-        responseObject = {
-                        'status': 'fail',
-                        'message': 'User already exists.',
-                        'Exception': e.decode()
-                                }
-        return make_response(jsonify(responseObject)), 401
+    
 
 @mod.route("/auth/login", methods=['POST'])
-def login(): 
+def login(current_user): 
         data = request.get_json() 
-        if not data or not data['username'] or not data['password']:
-            return jsonify({'message':'password and username required'}),404
-
-        if conn.login(data['username'],data['password']):
-            token = jwt.encode({'user_id':user['user_id'], 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'])
-            return jsonify({'token':token.decode('UTF-8')}),200
-        else:
-            return jsonify({'message':'Could not verify, Login required !'}),401
+    
+    if not data or not auth.username or not auth.password:
+        return make_response('coul not verify',401,{'WWW-Authentication':'Basic realm = "Login required !"'})
+    user = conn.user(auth.username)
+    if not user:
+        return make_response('coul not verify',401,{'WWW-Authentication':'Basic realm = "Login required !"'})
+    if check_password_hash(user['password'],auth.password):
+        token = jwt.encode({'user_id':user['user_id'], 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'])
+        return jsonify({'token':token.decode('UTF-8')}),200
 
 @mod.route('/parcels', methods=['POST'])
-def make_order():
+def make_order(current_user):
     pass
 
 @mod.route('/parcels', methods=['GET'])
@@ -66,15 +56,15 @@ def get_orders():
     pass
 
 @mod.route('/parcels/<int:parcelId>', methods=['GET'])
-def get_specific_order(parcelId):
+def get_specific_order(current_user,parcelId):
     pass
 
 @mod.route('/parcels/<int:parcelId>/destination', methods=['PUT '])
-def change_destination(parcelId):
+def change_destination(current_user,parcelId):
     pass
 @mod.route('/parcels/<int:parcelId>/status', methods=['PUT '])
 def status(parcelId):
     pass
 @mod.route('/parcels/<int:parcelId>/presentLocation',methods=['PUT'])
-def change_present_location(parcelId):
+def change_present_location(current_user,parcelId):
     pass

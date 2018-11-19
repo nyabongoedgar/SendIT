@@ -7,6 +7,9 @@ python:
 cache: pip
 
 install: "pip install -r requirements.txt"
+before_script:
+  - psql -c 'create database sendit-test;' -U postgres
+  - export DATABASE_NAME=sendit-test  
 
 script: python test_api.py  
 

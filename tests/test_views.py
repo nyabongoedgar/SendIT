@@ -14,34 +14,24 @@ class Test_auth(unittest.TestCase):
         print('SetUp')
         self.client = app.test_client()
         app.testing = True
-        test = flask.Blueprint('application.users.routes.db',__name__) 
-        self.models_object = models.models.DatabaseConnection()
+        self.db_object = DatabaseConnection()
         
     @classmethod
     def tearDownClass(self):
         print('TearDown')
-        self.models_object.test_delete('testername')   
+        # self.models_object.test_delete('testername')   
         
-    @staticmethod
+   
     def register_user():
         client = app.test_client()
-        resp_register = client.post(
-                '/auth/signup',
-                data=json.dumps(dict(
-                    user_id="2",
-                    email_address='testername@gmail.com',
-                    password='testerpassword',
-                    username="testername",
-                )),
-                content_type='application/json'
-            )
+        resp_register = client.post('/auth/signup',data=json.dumps({'username':'testname','password':'password','admin':False}),content_type='application/json')
         return True
           
             
 
 
     def test_login(self):
-        Test_auth.register_user()
+        register_user()
         #test for right details
         response = self.client.post('/auth/login',data=json.dumps(dict( username="testername",password='testerpassword')),content_type='application/json')
         self.assertEqual(response.status_code,200)

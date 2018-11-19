@@ -9,9 +9,7 @@ class DatabaseConnection:
        
 
         try:
-            db_credentials = """
-		    dbname='sendit' user='postgres' host='localhost' password='password' port='5432'  """
-            self.connection = psycopg2.connect(db_credentials)
+            self.connection = psycopg2.connect(dbname=os.environ['DATABASE_NAME'], user=postgres, host='localhost', password='password', port='5432')
 
             self.connection.autocommit = True
             self.cursor = self.connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
@@ -42,6 +40,7 @@ class DatabaseConnection:
 
     def create_users(self,username, email, password,admin=False):
         create_user = "INSERT INTO users(username, email, password, admin) VALUES('{}', '{}', '{}', '{}')".format(username, email, password,admin)
+        self.cursor.execute("INSERT into users(user_id,email_address,password,username) VALUES(%s,%s,%s,%s)",(user_id,email_address,password,username))
         self.cursor.execute(create_user)
     
     def login(self, username, password):
