@@ -47,7 +47,7 @@ class DatabaseConnection:
         sql = "SELECT * FROM users WHERE username='{}' and password = '{}'".format(username,password)
         self.cursor.execute(sql)
         user = self.cursor.fetchone()
-        rowcount = self.cursor.rowcount
+        return user
 
 
     def create_parcel_order(self,parcel_id,parcel_description,parcel_weight,parcel_source,parcel_destination,receiver_name,receiver_telephone,date_created,current_location,status):

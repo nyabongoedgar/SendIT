@@ -41,7 +41,7 @@ def register_user():
 def login(current_user): 
     data = request.get_json() 
     if not data or not data['username'] or not data['password']:
-        return jsonify({'message':'Verification of credentials failed !'}),401{'WWW-Authentication':'Basic realm = "Login required !"'})
+        return jsonify({'message':'Verification of credentials failed !'}),401
     user = conn.user(username)
     if not user:
         return jsonify({'message':'Verification of credentials failed !'}),401
