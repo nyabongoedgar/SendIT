@@ -7,10 +7,10 @@ from functools import wraps
 
 mod = Blueprint('parcels',__name__,url_prefix='/api/v1')
 
-#the actual decorator function
+
 def require_appkey(view_function):
     @wraps(view_function)
-    #the new, post-decoration function
+   
     def decorated_function(*args, **kwargs):
         if request.args.get('key') and request.args.get('key') == 'mysimpleapikey':
             return view_function(*args, **kwargs)
@@ -22,12 +22,11 @@ def require_appkey(view_function):
 parcel_object = Parcel()
 user_object = User()
 
-#index route 
+ 
 @mod.route('/')
 def index():
     return 'Welcome to the SendIT App'
-
-#Account creation route
+ 
 @mod.route('/signup', methods=['POST'])
 
 def signup():
@@ -41,7 +40,7 @@ def signup():
     generated_id = Helpers.gen_id(user_object.users,"user_id")
     return user_object.signup(generated_id,username,password,email)
 
-#Sign in route
+ 
 @mod.route('/login',methods=['POST'])
 def signin():
     data = request.get_json()
@@ -56,7 +55,7 @@ def signin():
 def logout():
     return user_object.logout()
 
-#Create a parcel delivery order
+ 
 @mod.route("/parcels", methods=['POST'])
 def create_parcel_delivery_order():
    
@@ -91,22 +90,20 @@ def create_parcel_delivery_order():
       
     return parcel_object.create_parcel_order_delivery(order)
 
-#Fetch all parcels records '''
+ 
 @mod.route('/parcels', methods= ['GET'])
 def get_all_parcels():
     if len(user_object.logged_in) is 0:
         return jsonify({'message':'Login is required !'}),401
     return parcel_object.get_all_parcels()
            
-
-#Fetch a single parcel record
+ 
 @mod.route("/parcels/<int:parcelId>", methods= ['GET'])
 def get_one_sale(parcelId):
     if len(user_object.logged_in) is 0:
         return jsonify({'message':'Login is required !'}),401
     return parcel_object.get_one_parcel(parcelId)
-
-#route for cancelling a parcel order
+ 
 @mod.route("/parcels/<int:parcelId>/cancel", methods=['PUT'])
 def cancel_order(parcelId):
     if len(user_object.logged_in) is 0:
@@ -124,7 +121,7 @@ def cancel_order(parcelId):
     if cancelled_order is not None:
         return parcel_object.cancel_specific_parcel(parcelId)
 
-#route for getting all orders made by a specific user
+ 
 @mod.route("/users/<int:userId>/parcels", methods=['GET'])
 @require_appkey
 def get_user_orders(userId):

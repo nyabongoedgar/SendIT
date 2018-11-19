@@ -13,7 +13,7 @@ class Helpers:
             item_id  = 1
             return item_id
         else:
-            ##setting id if list is not empty
+            
             last_dict = items_list[len(items_list)-1]
             id = int(last_dict[item_key])
             item_id = int(id + 1)
