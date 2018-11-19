@@ -4,7 +4,7 @@ from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
 from db import DatabaseConnection
  
-mod = Blueprint('Parcel',__name__, url_prefix='/api/v1/')
+mod = Blueprint('Parcel',__name__, url_prefix='/api/v2/')
 
 conn_object = DatabaseConnection()
 
@@ -30,17 +30,19 @@ def index():
     return jsonify({'message':'SendIT application'}),200
  
 @mod.route('/auth/signup', methods = ['POST']) 
-def register_user(current_user):
+def register_user():
     data = request.get_json()
+    conn_object.register_user(data['username'],data['email'],data['password'],False)
+    return jsonify({'message':'User registered successfully'}),201
+    
     
 
 @mod.route("/auth/login", methods=['POST'])
 def login(current_user): 
-        data = request.get_json() 
-    
-    if not data or not auth.username or not auth.password:
+    data = request.get_json() 
+    if not data or not data['username'] or not data['password']:
         return make_response('coul not verify',401,{'WWW-Authentication':'Basic realm = "Login required !"'})
-    user = conn.user(auth.username)
+    user = conn.user(username)
     if not user:
         return make_response('coul not verify',401,{'WWW-Authentication':'Basic realm = "Login required !"'})
     if check_password_hash(user['password'],auth.password):
@@ -48,14 +50,17 @@ def login(current_user):
         return jsonify({'token':token.decode('UTF-8')}),200
 
 @mod.route('/parcels', methods=['POST'])
+@token_required
 def make_order(current_user):
     pass
 
 @mod.route('/parcels', methods=['GET'])
+@token_required
 def get_orders():
     pass
 
 @mod.route('/parcels/<int:parcelId>', methods=['GET'])
+@token_required
 def get_specific_order(current_user,parcelId):
     pass
 
@@ -63,8 +68,11 @@ def get_specific_order(current_user,parcelId):
 def change_destination(current_user,parcelId):
     pass
 @mod.route('/parcels/<int:parcelId>/status', methods=['PUT '])
+@token_required
 def status(parcelId):
     pass
+
 @mod.route('/parcels/<int:parcelId>/presentLocation',methods=['PUT'])
+@token_required
 def change_present_location(current_user,parcelId):
     pass

@@ -6,10 +6,10 @@ import os
 class DatabaseConnection:
 
     def __init__(self):
-       
+        #dbname=os.environ['DATABASE_NAME']
 
         try:
-            self.connection = psycopg2.connect(dbname=os.environ['DATABASE_NAME'], user='postgres', host='localhost', password='password', port='5432')
+            self.connection = psycopg2.connect(dbname='sendit', user='postgres', host='localhost', password='password', port='5432')
 
             self.connection.autocommit = True
             self.cursor = self.connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
@@ -38,9 +38,9 @@ class DatabaseConnection:
         user = self.cursor.fetchone()
         return user
 
-    def create_users(self,username, email, password,admin=False):
+    def register_user(self,username, email, password,admin):
         create_user = "INSERT INTO users(username, email, password, admin) VALUES('{}', '{}', '{}', '{}')".format(username, email, password,admin)
-        self.cursor.execute("INSERT into users(user_id,email_address,password,username) VALUES(%s,%s,%s,%s)",(user_id,email_address,password,username))
+        self.cursor.execute("INSERT into users(username,email,password,admin) VALUES(%s,%s,%s,%s)",(username,email,password,admin))
         self.cursor.execute(create_user)
     
     def login(self, username, password):
