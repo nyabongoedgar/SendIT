@@ -1,27 +1,20 @@
 import unittest, json
-from flask import request
-import requests
-from application import app 
-from application import Blueprint 
-from application.users.routes import db
-import flask
-from application.users import models
-import chardet
+from application import app
 
-class Test_auth(unittest.TestCase):
+
+class TestViews(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         print('SetUp')
         self.client = app.test_client()
-        app.testing = True
-        self.db_object = DatabaseConnection()
+        
         
     @classmethod
     def tearDownClass(self):
         print('TearDown')
         # self.models_object.test_delete('testername')   
         
-   
+    @staticmethod 
     def register_user():
         client = app.test_client()
         resp_register = client.post('/auth/signup',data=json.dumps({'username':'testname','password':'password','admin':False}),content_type='application/json')
@@ -31,7 +24,7 @@ class Test_auth(unittest.TestCase):
 
 
     def test_login(self):
-        register_user()
+        TestViews.register_user()
         #test for right details
         response = self.client.post('/auth/login',data=json.dumps(dict( username="testername",password='testerpassword')),content_type='application/json')
         self.assertEqual(response.status_code,200)

@@ -26,8 +26,8 @@ class DatabaseConnection:
         except:
             print('Cannot connect to the database.')
 
-    def get_user_id(self, user_id):
-        sql = "SELECT user_id FROM users WHERE user_id='{}' ".format(user_id)
+    def get_user_by_id(self, user_id):
+        sql = "SELECT * FROM users WHERE user_id='{}' ".format(user_id)
         self.cursor.execute(sql)
         userId = self.cursor.fetchone()
         return userId

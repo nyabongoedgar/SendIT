@@ -18,7 +18,7 @@ def token_required(f):
             return jsonify({'message':'Token is missing !'}),401
         try:
             data = jwt.decode(token,app.config['SECRET_KEY'])
-            current_user = conn.get_user_id(data)
+            current_user = conn.get_user_id(data['user_id'])
         except:
             return jsonify({'message':'Token is required'}),401
            
@@ -41,10 +41,10 @@ def register_user():
 def login(current_user): 
     data = request.get_json() 
     if not data or not data['username'] or not data['password']:
-        return make_response('coul not verify',401,{'WWW-Authentication':'Basic realm = "Login required !"'})
+        return jsonify({'message':'Verification of credentials failed !'}),401{'WWW-Authentication':'Basic realm = "Login required !"'})
     user = conn.user(username)
     if not user:
-        return make_response('coul not verify',401,{'WWW-Authentication':'Basic realm = "Login required !"'})
+        return jsonify({'message':'Verification of credentials failed !'}),401
     if check_password_hash(user['password'],auth.password):
         token = jwt.encode({'user_id':user['user_id'], 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'])
         return jsonify({'token':token.decode('UTF-8')}),200
@@ -54,22 +54,19 @@ def login(current_user):
 def make_order(current_user):
     pass
 
+
 @mod.route('/parcels', methods=['GET'])
 @token_required
-def get_orders():
+def get_all_orders():
     pass
 
-@mod.route('/parcels/<int:parcelId>', methods=['GET'])
-@token_required
-def get_specific_order(current_user,parcelId):
-    pass
 
 @mod.route('/parcels/<int:parcelId>/destination', methods=['PUT '])
 def change_destination(current_user,parcelId):
     pass
 @mod.route('/parcels/<int:parcelId>/status', methods=['PUT '])
 @token_required
-def status(parcelId):
+def status(current_user,parcelId):
     pass
 
 @mod.route('/parcels/<int:parcelId>/presentLocation',methods=['PUT'])
