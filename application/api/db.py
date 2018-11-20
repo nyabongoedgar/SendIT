@@ -27,11 +27,11 @@ class DatabaseConnection:
         except:
             print('Cannot connect to the database.')
 
-    # def get_user_by_id(self, user_id):
-    #     sql = "SELECT * FROM users WHERE user_id='{}' ".format(user_id)
-    #     self.cursor.execute(sql)
-    #     userId = self.cursor.fetchone()
-    #     return userId
+    def get_user_by_id(self, user_id):
+        sql = "SELECT * FROM users WHERE user_id='{}' ".format(user_id)
+        self.cursor.execute(sql)
+        user_result = self.cursor.fetchone()
+        return user_result
 
     def user(self, username):
         sql = "SELECT * FROM users WHERE username='{}'".format(username)
@@ -62,11 +62,17 @@ class DatabaseConnection:
         sql = "UPDATE table parcel_orders SET parcel_destination = '{}' WHERE parcel_id = '{}'".format(new_destination,parcel_id)
         self.cursor.execute(sql) 
 
+    def get_user_specific_parcel_orders(self,user_id):
+        sql = "SELECT * FROM parcel_orders WHERE user_id='{}'".format(user_id)
+        self.cursor.execute(sql)
+        placed_orders = self.cursor.fetchall()
+        return placed_orders
 
     def get_user_parcel_orders(self, user_id):
         sql = "SELECT * FROM parcel_orders WHERE user_id='{}'".format(user_id)
         self.cursor.execute(sql)
-        return answers
+        placed_orders = self.cursor.fetchall()
+        return placed_orders
     
     #admin methods
 

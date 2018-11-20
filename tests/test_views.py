@@ -50,13 +50,19 @@ class TestViews(unittest.TestCase):
         # self.assertEqual(wrong_data.status_code,401)
 
         def test_create_parcel_delivery_order(self):
+            self.client.post('/api/v2/auth/signup',data=json.dumps(self.user),content_type='application/json')
             response = self.client.post('/api/v2/parcels',data=json.dumps(self.parcel_order), content_type="application/json")
             self.assertEqual(response.status_code,201)
             response_data = json.loads(response.data.decode())
             self.assertEqual(response['message'], 'order placed successfully')
         
-        def test_get_all_user_orders(self):
+        def test_user_getting_orders(self):
+            self.client.post('/api/v2/auth/signup',data=json.dumps(self.user),content_type='application/json')
             response = self.client.get('/api/v2/parcels')
+            self.assertEqual(response.status_code,200)
+
+        def test_get_all_user_orders(self):
+            response = self.client.get('/api/v2/parcels/admin')
             self.assertEqual(response.status_code,200)
 
         def test_change_destination(self):

@@ -66,20 +66,35 @@ def login():
 @mod.route('/parcels', methods=['POST'])
 @token_required
 def make_order(current_user):
-    
+    user  = conn_object.get_user_by_id(current_user)
+    if user['admin'] ==  True:
+        return  jsonify({'message':'This is a normal user route'}),401
     data = request.get_json()
-    conn_object.create_parcel_order(data['parcel_description'],data['parcel_weight'],data['parcel_source'],data['parcel_destination']data['receiver_name'],data['receiver_telephone'],data['current_location'],data['status'])
+    conn_object.create_parcel_order(data['parcel_description'],data['parcel_weight'],data['parcel_source'],data['parcel_destination'],data['receiver_name'],data['receiver_telephone'],data['current_location'],data['status'])
     return jsonify({'message':'order placed successfully'}),201
 
 
 @mod.route('/parcels', methods=['GET'])
+'''This function returns a users order '''
 @token_required
-def get_all_orders():
-    return conn_object.get_all_parcel_orders()
+def get_user_specific_orders(current_user):
+    user  = conn_object.get_user_by_id(current_user)
+    if user['admin'] ==  True:
+        return  jsonify({'message':'This is a normal user route'}),401
+    output = []
+    placed_orders  = conn_object.get_user_specific_parcel_orders(user['user_id'])
+    if placed_orders is None:
+        return jsonify({'message':'No orders placed for this user'})
+    for order in placed_orders:
+        output.append(order)
+    return jsonify({'placed orders':output}),200
 
 
 @mod.route('/parcels/<int:parcelId>/destination', methods=['PUT'])
 def change_destination(current_user,parcelId):
+    user  = conn_object.get_user_by_id(current_user)
+    if user['admin'] ==  True:
+        return  jsonify({'message':'This is a normal user route'}),401
     data = request.get_json()
     new_destination = data['destination']
     return conn.object.change_parcel_destination(new_destination,parcelId)
@@ -87,6 +102,9 @@ def change_destination(current_user,parcelId):
 @mod.route('/parcels/<int:parcelId>/status', methods=['PUT'])
 @token_required
 def status(current_user,parcelId):
+    user  = conn_object.get_user_by_id(current_user)
+    if user['admin'] ==  False:
+        return  jsonify({'message':'This is an admin route, you are not authorized to access it'}),401
     data = request.get_json()
     new_status = data['status']
     return conn_object.change_parcel_status(new_status,parcelId)
@@ -94,6 +112,23 @@ def status(current_user,parcelId):
 @mod.route('/parcels/<int:parcelId>/presentLocation',methods=['PUT'])
 @token_required
 def change_present_location(current_user,parcelId):
+    if user['admin'] ==  False:
+        return  jsonify({'message':'This is an admin route, you are not authorized to access it'}),401
     data = request.get_json()
     present_location = data['present_location']
     return change_parcel_current_location(present_location,parcelId)
+
+@mod.route('/parcels/admin', methods=['GET'])
+def get_all_user_orders(current_user):
+    if user['admin'] ==  False:
+        return  jsonify({'message':'This is an admin route, you are not authorized to access it'}),401
+    user  = conn_object.get_user_by_id(current_user)
+    if user['admin'] ==  False:
+        return  jsonify({'message':'This is a normal user route'}),401
+    output = []
+    placed_orders  = conn_object.get_user_parcel_orders(user['user_id'])
+    if placed_orders is None:
+        return jsonify({'message':'No orders placed for this user'})
+    for order in placed_orders:
+        output.append(order)
+    return jsonify({'placed orders':output}),200
