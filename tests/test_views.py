@@ -1,6 +1,6 @@
 import unittest, json
 from application import app
-from db import DatabaseConnection
+from aplication.api.db import DatabaseConnection
 
 
 class TestViews(unittest.TestCase):

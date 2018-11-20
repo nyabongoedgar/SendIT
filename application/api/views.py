@@ -5,7 +5,7 @@ import jwt
 from functools import wraps
 from application import app
 # from werkzeug.security import generate_password_hash, check_password_hash
-from db import DatabaseConnection
+from application.api.db import DatabaseConnection
  
  
 mod = Blueprint('Parcel',__name__, url_prefix='/api/v2/')
