@@ -91,7 +91,7 @@ class DatabaseConnection:
 
     def drop_tables(self,args):
         for table in args:
-            sql= "DROP TABLE IF EXISTS " + table+" CASCADE"
+            sql= "DROP TABLE IF EXISTS {} CASCADE".format(table)
             self.cursor.execute(sql)
 
    
