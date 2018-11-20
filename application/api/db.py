@@ -82,17 +82,21 @@ class DatabaseConnection:
     def get_all_parcel_orders(self):
         sql = "SELECT * FROM parcel_orders"
         self.cursor.execute(sql)
-        question = self.cursor.fetchall()
-        return question
+        all_orders = self.cursor.fetchall()
+        return all_orders
 
    
     def change_parcel_status(self, new_status, parcel_id):
         sql = "UPDATE table parcel_orders SET status = '{}' WHERE parcel_id = '{}' ".format(new_status,parcel_id)
         self.cursor.execute(sql)
+        rowcount = self.cursor.rowcount
+		return rowcount
 
     def change_parcel_current_location(self, new_location, parcel_id):
         sql = "UPDATE table parcel_orders SET current_location ='{}' WHERE parcel_id = '{}'".format(new_location,parcel_id) 
         self.cursor.execute(sql)    
+        rowcount = self.cursor.rowcount
+		return rowcount
     
     def delete_user(self,username):
         sql = "DELETE FROM users WHERE username='{}'".format(username)

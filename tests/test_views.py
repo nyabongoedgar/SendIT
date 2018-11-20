@@ -76,11 +76,14 @@ class TestViews(unittest.TestCase):
             self.client.post('/api/v2/parcels',data=json.dumps(self.parcel_order), content_type="application/json")
             response = self.client.put('/api/v2/parcels/1/status', data=json.dumps(self.new_status), content_type="application/json")
             self.assertEqual(response.status_code,200)
-        
+            response_data = json.loads(response.data.decode())
+            self.assertEqual(response['message'],'status of parcel delivery order changed')    
+
         def test_change_present_location(self):
             self.client.post('/api/v2/parcels',data=json.dumps(self.parcel_order), content_type="application/json")
             response = self.client.put('/api/v2/parcels/1/presentLocation', data=json.dumps(self.new_status), content_type="application/json")
             self.assertEqual(response.status_code,200)
+            self.assertEqual(response_data['message'],'present location of parcel delivery order changed')
 
             
 

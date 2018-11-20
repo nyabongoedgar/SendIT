@@ -111,6 +111,10 @@ def status(current_user,parcelId):
     data = request.get_json()
     new_status = data['status']
     result_set = conn_object.change_parcel_status(new_status,parcelId)
+    if result_set is not 1:
+        return jsonify({'message':'Failed to update status of delivery order'}),400
+
+    return jsonify({'message':'status of parcel delivery order changed'}),200
 
 @mod.route('/parcels/<int:parcelId>/presentLocation',methods=['PUT'])
 @token_required
@@ -119,7 +123,12 @@ def change_present_location(current_user,parcelId):
         return  jsonify({'message':'This is an admin route, you are not authorized to access it'}),401
     data = request.get_json()
     present_location = data['present_location']
-    return change_parcel_current_location(present_location,parcelId)
+    result_set = conn_object.change_parcel_current_location(present_location,parcelId)
+    if result_set is not 1:
+        return jsonify({'message':'Failed to update present location of delivery order'}),400
+
+    return jsonify({'message':'present location of parcel delivery order changed'}),200
+
 
 @mod.route('/parcels/admin', methods=['GET'])
 def get_all_user_orders(current_user):
