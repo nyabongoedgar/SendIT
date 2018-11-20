@@ -44,7 +44,7 @@ def register_user():
     if user is not None:
         return jsonify({'message':'Username already exists'}),401 
     # hashed_pasword = generate_password_hash(password, method='sha256')
-    conn_object.register_user(username,email,password,False)
+    conn_object.register_user(username,email,password)
     return jsonify({'message':'User registered successfully'}),201
     
     
@@ -61,6 +61,7 @@ def login():
     if user['password'] == data['password']:
         token = jwt.encode({'user_id':user['user_id'], 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'], algorithm='HS256')
         return jsonify({'token':token.decode('UTF-8')}),200
+    return jsonify({'message':'password does not match !'})
 
 @mod.route('/parcels', methods=['POST'])
 @token_required
