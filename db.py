@@ -38,7 +38,8 @@ class DatabaseConnection:
         user = self.cursor.fetchone()
         return user
 
-    def register_user(self,username, email, password,admin):
+    def register_user(self,username, email, password):
+        admin = False
         create_user = "INSERT INTO users(username, email, password, admin) VALUES('{}', '{}', '{}', '{}')".format(username, email, password,admin)
         self.cursor.execute(create_user)
     
@@ -83,9 +84,12 @@ class DatabaseConnection:
         sql = "UPDATE table parcel_orders SET current_location ='{}' WHERE parcel_id = '{}'".format(new_location,parcel_id) 
         self.cursor.execute(sql)    
     
+    def delete_user(self,username):
+        sql = "DELETE FROM users WHERE username='{}'".format(username)
+        self.cursor.execute(sql)
 
     def drop_tables(self):
-        sql = "DROP TABLE users, parcel_orders"
+        sql= "DROP TABLE IF EXISTS parcels_orders, users CASCADE"
         self.cursor.execute(sql)
 
    
