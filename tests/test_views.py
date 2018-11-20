@@ -10,12 +10,15 @@ class TestViews(unittest.TestCase):
         self.client = app.test_client()
         self.conn_object = DatabaseConnection()
         self.user ={"username":"Gafabusa","password":"123","email":"gafabusa@gmail.com"}
+        self.parcel_order = {'parcel_description':'this parcel contains a bag','parcel_weight':30,'parcel_source':'Ntinda','parcel_destination':'Lubaga','receiver_name':'Godfrey','receiver_telephone':'077890340','current_location':'Ntinda','status':'pending'}
+        self.new_destination = {'destination':'Kamwokya'}
+        self.new_status = {'status':'delivered'}
         
         
     @classmethod
     def tearDownClass(self):
         print('TearDown')
-        # self.conn_object.drop_tables([parcel_orders, users])   
+        self.conn_object.drop_tables([parcel_orders, users])   
 
 
     def test_user_registration_user(self):
@@ -45,6 +48,33 @@ class TestViews(unittest.TestCase):
         # response3 = json.loads(wrong_data.data.decode())
         # self.assertEqual(response3['message'],'Verification of credentials failed !')
         # self.assertEqual(wrong_data.status_code,401)
+
+        def test_create_parcel_delivery_order(self):
+            response = self.client.post('/api/v2/parcels',data=json.dumps(self.parcel_order), content_type="application/json")
+            self.assertEqual(response.status_code,201)
+            response_data = json.loads(response.data.decode())
+            self.assertEqual(response['message'], 'order placed successfully')
+        
+        def test_get_all_user_orders(self):
+            response = self.client.get('/api/v2/parcels')
+            self.assertEqual(response.status_code,200)
+
+        def test_change_destination(self):
+            self.client.post('/api/v2/parcels',data=json.dumps(self.parcel_order), content_type="application/json")
+            response = self.client.put('/api/v2/parcels/1/destination', data=json.dumps(self.new_destination), content_type="application/json")
+            self.assertEqual(response.status_code,200)
+
+        def test_change_status(self):
+            self.client.post('/api/v2/parcels',data=json.dumps(self.parcel_order), content_type="application/json")
+            response = self.client.put('/api/v2/parcels/1/status', data=json.dumps(self.new_status), content_type="application/json")
+            self.assertEqual(response.status_code,200)
+        
+        def test_change_present_location(self):
+            self.client.post('/api/v2/parcels',data=json.dumps(self.parcel_order), content_type="application/json")
+            response = self.client.put('/api/v2/parcels/1/presentLocation', data=json.dumps(self.new_status), content_type="application/json")
+            self.assertEqual(response.status_code,200)
+
+            
 
 if __name__ == '__main__':
     unittest.main()

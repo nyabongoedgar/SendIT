@@ -66,8 +66,10 @@ def login():
 @mod.route('/parcels', methods=['POST'])
 @token_required
 def make_order(current_user):
+    
     data = request.get_json()
-    return conn_object.create_parcel_order(data['parcel_description'],data['parcel_weight'],data['parcel_source'],data,data['receiver_name'],data['receiver_telephone'],data['current_location'],data['status'])
+    conn_object.create_parcel_order(data['parcel_description'],data['parcel_weight'],data['parcel_source'],data['parcel_destination']data['receiver_name'],data['receiver_telephone'],data['current_location'],data['status'])
+    return jsonify({'message':'order placed successfully'}),201
 
 
 @mod.route('/parcels', methods=['GET'])
@@ -76,13 +78,13 @@ def get_all_orders():
     return conn_object.get_all_parcel_orders()
 
 
-@mod.route('/parcels/<int:parcelId>/destination', methods=['PUT '])
+@mod.route('/parcels/<int:parcelId>/destination', methods=['PUT'])
 def change_destination(current_user,parcelId):
     data = request.get_json()
     new_destination = data['destination']
     return conn.object.change_parcel_destination(new_destination,parcelId)
 
-@mod.route('/parcels/<int:parcelId>/status', methods=['PUT '])
+@mod.route('/parcels/<int:parcelId>/status', methods=['PUT'])
 @token_required
 def status(current_user,parcelId):
     data = request.get_json()
