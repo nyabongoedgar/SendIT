@@ -18,7 +18,8 @@ class TestViews(unittest.TestCase):
     @classmethod
     def tearDownClass(self):
         print('TearDown')
-        self.conn_object.drop_tables([parcel_orders, users])   
+        self.conn_object.drop_tables([parcel_orders, users])
+        self.conn_object.drop_tables('parcel_orders', 'users')   
 
 
     def test_user_registration_user(self):

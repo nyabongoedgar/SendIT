@@ -75,7 +75,6 @@ def make_order(current_user):
 
 
 @mod.route('/parcels', methods=['GET'])
-'''This function returns a users order '''
 @token_required
 def get_user_specific_orders(current_user):
     user  = conn_object.get_user_by_id(current_user)
