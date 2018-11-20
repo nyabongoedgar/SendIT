@@ -13,6 +13,7 @@ install:
 
 before script:
   - psql -c 'createdb test_db;' -U postgres
+  - export DATABASE_NAME=test_db
 
 script:
   - py.test --cov=application tests/

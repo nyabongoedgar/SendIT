@@ -6,10 +6,11 @@ import os, datetime
 class DatabaseConnection:
 
     def __init__(self):
-        #dbname=os.environ['DATABASE_NAME']
+        db = os.environ['DATABASE_NAME']
+        
 
         try:
-            self.connection = psycopg2.connect(dbname='sendit', user='postgres', host='localhost', password='password', port='5432')
+            self.connection = psycopg2.connect(dbname=db, user='postgres', host='localhost', password='password', port='5432')
 
             self.connection.autocommit = True
             self.cursor = self.connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
@@ -88,9 +89,10 @@ class DatabaseConnection:
         sql = "DELETE FROM users WHERE username='{}'".format(username)
         self.cursor.execute(sql)
 
-    def drop_tables(self):
-        sql= "DROP TABLE IF EXISTS parcels_orders, users CASCADE"
-        self.cursor.execute(sql)
+    def drop_tables(self,args):
+        for table in args:
+            sql= "DROP TABLE IF EXISTS " + table+" CASCADE"
+            self.cursor.execute(sql)
 
    
 
