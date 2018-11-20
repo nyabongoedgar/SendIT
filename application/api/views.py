@@ -4,7 +4,7 @@ import datetime
 import jwt
 from functools import wraps
 from application import app
-# from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from application.api.db import DatabaseConnection
  
  
@@ -43,8 +43,8 @@ def register_user():
     user = conn_object.user(username)  
     if user is not None:
         return jsonify({'message':'Username already exists'}),401 
-    # hashed_pasword = generate_password_hash(password, method='sha256')
-    conn_object.register_user(username,email,password)
+    hashed_pasword = generate_password_hash(password, method='sha256')
+    conn_object.register_user(username,email,hashed_password)
     return jsonify({'message':'User registered successfully'}),201
     
     
@@ -57,8 +57,8 @@ def login():
     user = conn_object.user(data.get('username'))
     if not user:
         return jsonify({'message':'Verification of credentials failed !'}),401
-    # if check_password_hash(user['password'],data['password']):
-    if user['password'] == data['password']:
+    if check_password_hash(user['password'],data['password']):
+    # if user['password'] == data['password']:
         token = jwt.encode({'user_id':user['user_id'], 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'], algorithm='HS256')
         return jsonify({'token':token.decode('UTF-8')}),200
     return jsonify({'message':'password does not match !'})
