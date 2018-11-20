@@ -1,19 +1,23 @@
-langauge: python
+language: python
 
 python: 
-   -"3.5"
-   -"3.6"
-   
-cache: pip
+  - "3.6"
+services:
+  - postgresql
+env:
+  global:
+    - APP_SETTINGS=test_db
 
-install: "pip install -r requirements.txt"
-before_script:
-  - psql -c 'create database sendit-test;' -U postgres
-  - export DATABASE_NAME=sendit-test  
+install:
+  - pip install -r requirements.txt
 
-script: python test_api.py  
+before script:
+  - psql -c 'createdb test_db;' -U postgres
 
-virtualenv: 
-  system_site_packages:true
+script:
+  - py.test --cov=application tests/
+  
+after_success:
+  - coveralls
 
 

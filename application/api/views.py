@@ -17,8 +17,9 @@ def token_required(f):
         if not token:
             return jsonify({'message':'Token is missing !'}),401
         try:
-            data = jwt.decode(token,app.config['SECRET_KEY'])
-            current_user = conn.get_user_id(data['user_id'])
+            data = jwt.decode(token,app.config['SECRET_KEY'], algorithms=['HS256'])
+            current_user = data['user_id']
+
         except:
             return jsonify({'message':'Token is required'}),401
            
@@ -49,7 +50,7 @@ def login():
     if not user:
         return jsonify({'message':'Verification of credentials failed !'}),401
     if check_password_hash(user['password'],data['password']):
-        token = jwt.encode({'user_id':user['user_id'], 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'])
+        token = jwt.encode({'user_id':user['user_id'], 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'], algorithm='HS256')
         return jsonify({'token':token.decode('UTF-8')}),200
 
 @mod.route('/parcels', methods=['POST'])

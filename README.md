@@ -2,9 +2,9 @@ App hosted on Heroku at https://sendinc.herokuapp.com/api/v1/
 <br/>
 User interface hosted at https://nyabongoedgar.github.io/SendIT/UI/
 <br/>
-
-[![Build Status](https://travis-ci.org/nyabongoedgar/SendIT.svg?branch=develop)](https://travis-ci.org/nyabongoedgar/SendIT)<a href="https://codeclimate.com/github/nyabongoedgar/SendIT/maintainability"><img src="https://api.codeclimate.com/v1/badges/de8d6ff5a0fdf45eba8c/maintainability" /></a>
-[![Coverage Status](https://coveralls.io/repos/github/nyabongoedgar/SendIT/badge.svg?branch=develop)](https://coveralls.io/github/nyabongoedgar/SendIT?branch=develop)
+[![Build Status](https://travis-ci.org/nyabongoedgar/SendIT.svg?branch=ft-challenge-three)](https://travis-ci.org/nyabongoedgar/SendIT)
+[![Maintainability](https://api.codeclimate.com/v1/badges/de8d6ff5a0fdf45eba8c/maintainability)](https://codeclimate.com/github/nyabongoedgar/SendIT/maintainability)
+[![Coverage Status](https://coveralls.io/repos/github/nyabongoedgar/SendIT/badge.svg?branch=ft-challenge-three)](https://coveralls.io/github/nyabongoedgar/SendIT?branch=ft-challenge-three)
 
 <h1> Working Endpoints</h1>
 <p><em>Before using the routes below, you should first signup and then login, After your session, you <b>must</b> logout by using the logout route</em></p>
