@@ -16,7 +16,7 @@ class DatabaseConnection:
 
             print ('Database connected.')
             users_table_sql = "CREATE TABLE IF NOT EXISTS users (user_id SERIAL PRIMARY KEY, username VARCHAR(80) NOT NULL, email VARCHAR(100) NOT NULL, password TEXT NOT NULL, admin Boolean NOT NULL);"
-            parcels_orders_table_sql = "CREATE TABLE IF NOT EXISTS parcel_orders (parcel_id UUID NOT NULL, user_id INTEGER REFERENCES users(user_id), parcel_description TEXT NOT NULL, parcel_weight INTEGER NOT NULL, price_quote INTEGER, parcel_source VARCHAR (255) NOT NULL, parcel_destination VARCHAR (255) NOT NULL, receiver_name VARCHAR (100) NOT NULL, receiver_telephone VARCHAR(10) NOT NULL, date_created TIMESTAMP NOT NULL,current_location VARCHAR(200),status VARCHAR(30), PRIMARY KEY(parcel_id,user_id));"
+            parcels_orders_table_sql = "CREATE TABLE IF NOT EXISTS parcel_orders (parcel_id UUID NOT NULL, user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE, parcel_description TEXT NOT NULL, parcel_weight INTEGER NOT NULL, price_quote INTEGER, parcel_source VARCHAR (255) NOT NULL, parcel_destination VARCHAR (255) NOT NULL, receiver_name VARCHAR (100) NOT NULL, receiver_telephone VARCHAR(10) NOT NULL, date_created TIMESTAMP NOT NULL,current_location VARCHAR(200),status VARCHAR(30), PRIMARY KEY(parcel_id,user_id));"
 
            
             self.cursor.execute(users_table_sql)
@@ -26,11 +26,11 @@ class DatabaseConnection:
         except:
             print('Cannot connect to the database.')
 
-    def get_user_by_id(self, user_id):
-        sql = "SELECT * FROM users WHERE user_id='{}' ".format(user_id)
-        self.cursor.execute(sql)
-        userId = self.cursor.fetchone()
-        return userId
+    # def get_user_by_id(self, user_id):
+    #     sql = "SELECT * FROM users WHERE user_id='{}' ".format(user_id)
+    #     self.cursor.execute(sql)
+    #     userId = self.cursor.fetchone()
+    #     return userId
 
     def user(self, username):
         sql = "SELECT * FROM users WHERE username='{}'".format(username)
@@ -40,7 +40,6 @@ class DatabaseConnection:
 
     def register_user(self,username, email, password,admin):
         create_user = "INSERT INTO users(username, email, password, admin) VALUES('{}', '{}', '{}', '{}')".format(username, email, password,admin)
-        self.cursor.execute("INSERT into users(username,email,password,admin) VALUES(%s,%s,%s,%s)",(username,email,password,admin))
         self.cursor.execute(create_user)
     
     def login(self, username, password):
