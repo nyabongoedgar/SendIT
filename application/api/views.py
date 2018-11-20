@@ -97,7 +97,10 @@ def change_destination(current_user,parcelId):
         return  jsonify({'message':'This is a normal user route'}),401
     data = request.get_json()
     new_destination = data['destination']
-    return conn.object.change_parcel_destination(new_destination,parcelId)
+    result = conn.object.change_parcel_destination(new_destination,parcelId)
+    if result_set is not 1:
+        return jsonify({'message':'Failed to update parcel delivery order destination'}),400
+    return jsonify({'message':'destination of parcel delivery order changed'}),200
 
 @mod.route('/parcels/<int:parcelId>/status', methods=['PUT'])
 @token_required
