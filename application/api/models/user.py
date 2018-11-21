@@ -31,4 +31,5 @@ class User:
     def promoter(self,username):
         sql = "UPDATE users SET admin='{}' WHERE username = '{}'".format(True,username)
         self.db_object.cursor.execute(sql)
-        return True
+        rowcount = self.db_object.cursor.rowcount
+        return rowcount

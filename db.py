@@ -33,7 +33,7 @@ class DatabaseConnection:
   
     def drop_tables(self, *tables):
         for table in tables:
-            sql = 'DROP TABLE IF EXISTS {}'.format(table)
+            sql = 'DROP TABLE IF EXISTS {} CASCADE'.format(table)
             self.cursor.execute(sql)
             
 

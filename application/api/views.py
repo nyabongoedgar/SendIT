@@ -50,7 +50,7 @@ def login():
     if check_password_hash(user['password'],data['password']):
         token = create_access_token(identity=user['user_id'])
         return jsonify({'token':token}), 200        
-    return jsonify({'message':'password does not match !'})
+    return jsonify({'message':'password does not match !'}),401
 
 @mod.route('/parcels', methods=['POST'])
 @jwt_required
@@ -143,8 +143,11 @@ def get_all_user_orders():
 
 @mod.route('/promote/<username>',methods=['PUT'])
 def promote_user(username):
+    user = user_object.user(username)
+    if user is None:
+        return jsonify({'message':'user promotion failed'}),400
     result_set =user_object.promoter(username)
-    if result_set:
+    if result_set is not None:
         return jsonify({'message':username + ' promoted to admin'}),200
-    return jsonify({'message':'user promotion failed'}),400
+    
     
