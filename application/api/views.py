@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request 
 import psycopg2
-import datetime
+import datetime, re
 from application import app
 from werkzeug.security import generate_password_hash, check_password_hash
 from db import DatabaseConnection
@@ -30,7 +30,15 @@ def register_user():
     email = data.get('email')
     username = data.get('username')
     password = data.get('password') 
-    user = user_object.user(username)  
+    user = user_object.user(username)
+    if not password or password.isspace():
+        return jsonify({'message': 'Password field can not be left empty.'}), 400
+    if not username or username.isspace():
+        return jsonify({'message': 'Username field can not be empty.'}), 400
+    if not email or email.isspace():
+        return jsonify({'message': 'Email field can not be empty.'}), 400
+    elif not re.match(r"[^@.]+@[A-Za-z]+\.[a-z]+", email):
+        return jsonify({'message': 'Enter a valid email address.'}), 400  
     if user is not None:
         return jsonify({'message':'Username already exists'}),400 
     hashed_password = generate_password_hash(password, method='sha256')
