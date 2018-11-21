@@ -5,12 +5,16 @@ import jwt
 from functools import wraps
 from application import app
 from werkzeug.security import generate_password_hash, check_password_hash
-from application.api.db import DatabaseConnection
+# from application.api.db import DatabaseConnection
+from application.api.models.user import User
+from application.api.models.parcels import Parcel
  
  
 mod = Blueprint('Parcel',__name__, url_prefix='/api/v2/')
 
-conn_object = DatabaseConnection()
+user_object = User()
+parcel_object = Parcel()
+# conn_object = DatabaseConnection()
 
 def token_required(f):
     @wraps(f)
@@ -40,21 +44,21 @@ def register_user():
     email = data.get('email')
     username = data.get('username')
     password = data.get('password') 
-    user = conn_object.user(username)  
+    user = user_object.user(username)  
     if user is not None:
         return jsonify({'message':'Username already exists'}),401 
     hashed_password = generate_password_hash(password, method='sha256')
-    conn_object.register_user(username,email,hashed_password)
+    user_object.register_user(username,email,hashed_password)
     return jsonify({'message':'User registered successfully'}),201
     
-    
+   
 
 @mod.route("/auth/login", methods=['POST'])
 def login(): 
     data = request.get_json() 
     if not data or not data.get('username') or not data.get('password'):
         return jsonify({'message':'No data has been sent'}),401
-    user = conn_object.user(data.get('username'))
+    user = user_object.user(data.get('username'))
     if not user:
         return jsonify({'message':'Verification of credentials failed !'}),401
     if check_password_hash(user['password'],data['password']):
@@ -67,22 +71,22 @@ def login():
 @mod.route('/parcels', methods=['POST'])
 @token_required
 def make_order(current_user):
-    user  = conn_object.get_user_by_id(current_user)
+    user  = user_object.get_user_by_id(current_user)
     if user['admin'] ==  True:
         return  jsonify({'message':'This is a normal user route'}),401
     data = request.get_json()
-    conn_object.create_parcel_order(data['parcel_description'],data['parcel_weight'],data['parcel_source'],data['parcel_destination'],data['receiver_name'],data['receiver_telephone'],data['current_location'],data['status'])
+    parcel_object.create_parcel_order(data['parcel_description'],data['parcel_weight'],data['parcel_source'],data['parcel_destination'],data['receiver_name'],data['receiver_telephone'],data['current_location'],data['status'])
     return jsonify({'message':'order placed successfully'}),201
 
 
 @mod.route('/parcels', methods=['GET'])
 @token_required
 def get_user_specific_orders(current_user):
-    user  = conn_object.get_user_by_id(current_user)
+    user  = user_object.get_user_by_id(current_user)
     if user['admin'] ==  True:
         return  jsonify({'message':'This is a normal user route'}),401
     output = []
-    placed_orders  = conn_object.get_user_specific_parcel_orders(user['user_id'])
+    placed_orders  = parcel_object.get_user_specific_parcel_orders(user['user_id'])
     if placed_orders is None:
         return jsonify({'message':'No orders placed for this user'})
     for order in placed_orders:
@@ -92,7 +96,7 @@ def get_user_specific_orders(current_user):
 
 @mod.route('/parcels/<int:parcelId>/destination', methods=['PUT'])
 def change_destination(current_user,parcelId):
-    user  = conn_object.get_user_by_id(current_user)
+    user  = user_object.get_user_by_id(current_user)
     if user['admin'] ==  True:
         return  jsonify({'message':'This is a normal user route'}),401
     data = request.get_json()
@@ -105,12 +109,12 @@ def change_destination(current_user,parcelId):
 @mod.route('/parcels/<int:parcelId>/status', methods=['PUT'])
 @token_required
 def status(current_user,parcelId):
-    user  = conn_object.get_user_by_id(current_user)
+    user  = user_object.get_user_by_id(current_user)
     if user['admin'] ==  False:
         return  jsonify({'message':'This is an admin route, you are not authorized to access it'}),401
     data = request.get_json()
     new_status = data['status']
-    result_set = conn_object.change_parcel_status(new_status,parcelId)
+    result_set = parcel_object.change_parcel_status(new_status,parcelId)
     if result_set is not 1:
         return jsonify({'message':'Failed to update status of delivery order'}),400
 
@@ -119,11 +123,12 @@ def status(current_user,parcelId):
 @mod.route('/parcels/<int:parcelId>/presentLocation',methods=['PUT'])
 @token_required
 def change_present_location(current_user,parcelId):
+    user  = user_object.get_user_by_id(current_user)
     if user['admin'] ==  False:
         return  jsonify({'message':'This is an admin route, you are not authorized to access it'}),401
     data = request.get_json()
     present_location = data['present_location']
-    result_set = conn_object.change_parcel_current_location(present_location,parcelId)
+    result_set = parcel_object.change_parcel_current_location(present_location,parcelId)
     if result_set is not 1:
         return jsonify({'message':'Failed to update present location of delivery order'}),400
 
@@ -132,13 +137,14 @@ def change_present_location(current_user,parcelId):
 
 @mod.route('/parcels/admin', methods=['GET'])
 def get_all_user_orders(current_user):
+    user  = user_object.get_user_by_id(current_user)
     if user['admin'] ==  False:
         return  jsonify({'message':'This is an admin route, you are not authorized to access it'}),401
-    user  = conn_object.get_user_by_id(current_user)
+    user  = parcel_object.get_user_by_id(current_user)
     if user['admin'] ==  False:
         return  jsonify({'message':'This is a normal user route'}),401
     output = []
-    placed_orders  = conn_object.get_user_parcel_orders(user['user_id'])
+    placed_orders  = parcel_object.get_user_parcel_orders(user['user_id'])
     if placed_orders is None:
         return jsonify({'message':'No orders placed for this user'})
     for order in placed_orders:
