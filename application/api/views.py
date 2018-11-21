@@ -22,7 +22,7 @@ conn_object = DatabaseConnection()
  
 @mod.route('/')
 def index():
-    return jsonify({'message':'SendIT application'}),200
+    return jsonify({'message':'Welcome to the SendIT application'}),200
  
 @mod.route('/auth/signup', methods = ['POST']) 
 def register_user():
@@ -43,7 +43,7 @@ def register_user():
 def login(): 
     data = request.get_json() 
     if not data or not data.get('username') or not data.get('password'):
-        return jsonify({'message':'No data has been sent'}),401
+        return jsonify({'message':'No data has been sent'}),400
     user = user_object.user(data.get('username'))
     if not user:
         return jsonify({'message':'Verification of credentials failed !'}),401
@@ -66,7 +66,7 @@ def make_order():
 
 @mod.route('/parcels', methods=['GET'])
 @jwt_required
-def get_user_specific_orders():
+def get_user_orders():
     current_user = get_jwt_identity()
     user  = user_object.get_user_by_id(current_user)
     if user['admin'] ==  True:
@@ -90,7 +90,7 @@ def change_destination(parcelId):
     data = request.get_json()
     new_destination = data['destination']
     result_set = parcel_object.change_parcel_destination(new_destination,parcelId)
-    if result_set == -1:
+    if result_set == None:
         return jsonify({'message':'Failed to update parcel delivery order destination'}),400
     return jsonify({'message':'destination of parcel delivery order changed'}),200
 
@@ -104,7 +104,7 @@ def status(parcelId):
     data = request.get_json()
     new_status = data['status']
     result_set = parcel_object.change_parcel_status(new_status,parcelId)
-    if result_set == -1:
+    if result_set == None:
         return jsonify({'message':'Failed to update status of delivery order'}),400
 
     return jsonify({'message':'status of parcel delivery order changed'}),200
@@ -119,7 +119,7 @@ def change_present_location(parcelId):
     data = request.get_json()
     present_location = data['present_location']
     result_set = parcel_object.change_parcel_current_location(present_location,parcelId)
-    if result_set == -1:
+    if result_set == None:
         return jsonify({'message':'Failed to update present location of delivery order'}),400
 
     return jsonify({'message':'present location of parcel delivery order changed'}),200
@@ -133,8 +133,6 @@ def get_all_user_orders():
     if user['admin'] ==  False:
         return  jsonify({'message':'This is an admin route, you are not authorized to access it'}),401
     user  = user_object.get_user_by_id(current_user)
-    if user['admin'] ==  False:
-        return  jsonify({'message':'This is a normal user route'}),401
     output = []
     placed_orders  = parcel_object.get_user_parcel_orders(user['user_id'])
     if placed_orders is None:
@@ -148,5 +146,5 @@ def promote_user(username):
     result_set =user_object.promoter(username)
     if result_set:
         return jsonify({'message':username + ' promoted to admin'}),200
-    return jsonify({'message':'user promotion failed'})
+    return jsonify({'message':'user promotion failed'}),400
     
