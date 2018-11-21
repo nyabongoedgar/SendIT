@@ -1,6 +1,6 @@
 import psycopg2
 import psycopg2.extras
-import os, datetime, uuid
+import os,uuid
 
 
 class DatabaseConnection:
@@ -17,7 +17,10 @@ class DatabaseConnection:
 
             print ('Database connected.')
             users_table_sql = "CREATE TABLE IF NOT EXISTS users (user_id SERIAL PRIMARY KEY, username VARCHAR(80) NOT NULL, email VARCHAR(100) NOT NULL, password TEXT NOT NULL, admin Boolean NOT NULL);"
-            parcels_orders_table_sql = "CREATE TABLE IF NOT EXISTS parcel_orders (parcel_id SERIAL, user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE, parcel_description TEXT NOT NULL, parcel_weight INTEGER NOT NULL, price_quote INTEGER, parcel_source VARCHAR (255) NOT NULL, parcel_destination VARCHAR (255) NOT NULL, receiver_name VARCHAR (100) NOT NULL, receiver_telephone VARCHAR(10) NOT NULL, date_created TIMESTAMP NOT NULL,current_location VARCHAR(200),status VARCHAR(30), PRIMARY KEY(parcel_id,user_id));"
+
+            parcels_orders_table_sql = "CREATE TABLE IF NOT EXISTS parcel_orders (parcel_id SERIAL NOT NULL, user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE, parcel_description TEXT NOT NULL, parcel_weight INTEGER NOT NULL, price_quote INTEGER, parcel_source VARCHAR (255) NOT NULL, parcel_destination VARCHAR (255) NOT NULL, receiver_name VARCHAR (100) NOT NULL, receiver_telephone VARCHAR(10) NOT NULL, date_created TIMESTAMP NOT NULL,current_location VARCHAR(200),status VARCHAR(30), PRIMARY KEY(parcel_id,user_id));"
+
+             
 
            
             self.cursor.execute(users_table_sql)
@@ -27,14 +30,6 @@ class DatabaseConnection:
         except:
             print('Cannot connect to the database.')
 
-    
-
-    
-    
-    
-
-
-    
   
     def drop_tables(self, *tables):
         for table in tables:

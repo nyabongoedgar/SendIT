@@ -27,3 +27,8 @@ class User:
         self.db_object.cursor.execute(sql)
         user = self.db_object.cursor.fetchone()
         return user
+
+    def promoter(self,username):
+        sql = "UPDATE users SET admin='{}' WHERE username = '{}'".format(True,username)
+        self.db_object.cursor.execute(sql)
+        return True

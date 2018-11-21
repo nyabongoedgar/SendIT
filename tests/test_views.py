@@ -6,7 +6,7 @@ from application.api.models.db import DatabaseConnection
 class TestViews(unittest.TestCase):
     
     def setUp(self):
-        print('SetUp')
+        # print('SetUp')
         self.client = app.test_client()
         self.conn_object = DatabaseConnection()
         self.user ={"username":"Gafabusa","password":"123","email":"gafabusa@gmail.com"}
@@ -18,9 +18,81 @@ class TestViews(unittest.TestCase):
         
  
     def tearDown(self):
-        print('TearDown')
+        # print('TearDown')
         self.conn_object.drop_tables('parcel_orders', 'users')   
 
+    def test_create_parcel_delivery_order(self):
+            self.client.post('/api/v2/auth/signup',data=json.dumps(self.user2),content_type='application/json')
+            #test for right details
+            login_response = self.client.post('/api/v2/auth/login',data=json.dumps(dict( username="Gafabusa2",password='123')),content_type='application/json')
+
+            login_data = json.loads(login_response.data.decode('utf-8'))
+            token = login_data.get('token')
+
+            response = self.client.post('/api/v2/parcels',data=json.dumps({'parcel_description':'this parcel contains a bag','parcel_weight':30,'parcel_source':'Ntinda','parcel_destination':'Lubaga','receiver_name':'Godfrey','receiver_telephone':'077890340','current_location':'Ntinda','status':'pending'}), content_type="application/json", headers={'Authorization': 'Bearer ' + token})
+            self.assertEqual(response.status_code,201)
+            response_data = json.loads(response.data.decode())
+            self.assertEqual(response_data['message'], 'order placed successfully')
+        
+    # def test_user_getting_orders(self):
+    #     self.client.post('/api/v2/auth/signup',data=json.dumps(self.user2),content_type='application/json')
+    #     #test for right details
+    #     login_response = self.client.post('/api/v2/auth/login',data=json.dumps(dict( username="Gafabusa2",password='123')),content_type='application/json')
+
+    #     login_data = json.loads(login_response.data.decode('utf-8'))
+    #     myheader = {'Authorization':"Bearer" + login_data.get('token')}
+    #     self.client.post('/api/v2/auth/signup',data=json.dumps(self.user),content_type='application/json')
+    #     response = self.client.get('/api/v2/parcels',headers = myheader)
+    #     self.assertEqual(response.status_code,200)
+
+    # def test_get_all_user_orders(self):
+    #     self.client.post('/api/v2/auth/signup',data=json.dumps(self.user2),content_type='application/json')
+    #     self.client.put('/api/v2/promote/Gafabusa2')
+    #     #test for right details
+    #     login_response = self.client.post('/api/v2/auth/login',data=json.dumps(dict( username="Gafabusa2",password='123')),content_type='application/json')
+
+    #     login_data = json.loads(login_response.data.decode('utf-8'))
+    #     myheader = {'Authorization':"Bearer" + login_data.get('token')}
+    #     response = self.client.get('/api/v2/admin/parcels',headers = myheader)
+    #     self.assertEqual(response.status_code,200)
+
+    # def test_change_destination(self):
+    #     self.client.post('/api/v2/auth/signup',data=json.dumps(self.user2),content_type='application/json')
+    #     #test for right details
+    #     login_response = self.client.post('/api/v2/auth/login',data=json.dumps(dict( username="Gafabusa2",password='123')),content_type='application/json')
+
+    #     login_data = json.loads(login_response.data.decode('utf-8'))
+    #     myheader = {'x-access-token':login_data.get('token')}
+    #     self.client.post('/api/v2/parcels',data=json.dumps(self.parcel_order), content_type="application/json")
+    #     response = self.client.put('/api/v2/parcels/1/destination', data=json.dumps(self.new_destination), content_type="application/json",headers = myheader)
+    #     self.assertEqual(response.status_code,200)
+    #     response_data = json.loads(response.data.decode())
+    #     self.assertEqual(response_data['message'],'destination of parcel delivery order changed')
+
+    # def test_change_status(self):
+    #     self.client.post('/api/v2/auth/signup',data=json.dumps(self.user2),content_type='application/json')
+    #     #test for right details
+    #     login_response = self.client.post('/api/v2/auth/login',data=json.dumps(dict( username="Gafabusa2",password='123')),content_type='application/json')
+
+    #     login_data = json.loads(login_response.data.decode('utf-8'))
+    #     myheader = {'x-access-token':login_data.get('token')}
+    #     self.client.post('/api/v2/parcels',data=json.dumps(self.parcel_order), content_type="application/json",headers = myheader)
+    #     response = self.client.put('/api/v2/parcels/1/status', data=json.dumps(self.new_status), content_type="application/json",headers = myheader)
+    #     self.assertEqual(response.status_code,200)
+    #     response_data = json.loads(response.data.decode())
+    #     self.assertEqual(response['message'],'status of parcel delivery order changed')    
+
+    # def test_change_present_location(self):
+    #     self.client.post('/api/v2/auth/signup',data=json.dumps(self.user2),content_type='application/json')
+    #     #test for right details
+    #     login_response = self.client.post('/api/v2/auth/login',data=json.dumps(dict( username="Gafabusa2",password='123')),content_type='application/json')
+
+    #     login_data = json.loads(login_response.data.decode('utf-8'))
+    #     myheader = {'x-access-token':login_data.get('token')}
+    #     self.client.post('/api/v2/parcels',data=json.dumps(self.parcel_order), content_type="application/json",headers = myheader)
+    #     response = self.client.put('/api/v2/parcels/1/presentLocation', data=json.dumps(self.new_status), content_type="application/json")
+    #     self.assertEqual(response.status_code,200)
+    #     self.assertEqual(response_data['message'],'present location of parcel delivery order changed')
 
     def test_user_registration_user(self):
        
@@ -49,77 +121,7 @@ class TestViews(unittest.TestCase):
         # self.assertEqual(response3['message'],'Verification of credentials failed !')
         # self.assertEqual(wrong_data.status_code,401)
 
-        def test_create_parcel_delivery_order(self):
-            self.client.post('/api/v2/auth/signup',data=json.dumps(self.user2),content_type='application/json')
-            #test for right details
-            login_response = self.client.post('/api/v2/auth/login',data=json.dumps(dict( username="Gafabusa2",password='123')),content_type='application/json')
-
-            login_data = json.loads(login_response.data.decode('utf-8'))
-            myheader = {'x-access-token':login_data.get('token')}
-
-            response = self.client.post('/api/v2/parcels',data=json.dumps(self.parcel_order), content_type="application/json", headers = myheader)
-            self.assertEqual(response.status_code,201)
-            response_data = json.loads(response.data.decode())
-            self.assertEqual(response['message'], 'order placed successfully')
         
-        def test_user_getting_orders(self):
-            self.client.post('/api/v2/auth/signup',data=json.dumps(self.user2),content_type='application/json')
-            #test for right details
-            login_response = self.client.post('/api/v2/auth/login',data=json.dumps(dict( username="Gafabusa2",password='123')),content_type='application/json')
-
-            login_data = json.loads(login_response.data.decode('utf-8'))
-            myheader = {'x-access-token':login_data.get('token')}
-            self.client.post('/api/v2/auth/signup',data=json.dumps(self.user),content_type='application/json')
-            response = self.client.get('/api/v2/parcels',headers = myheader)
-            self.assertEqual(response.status_code,200)
-
-        def test_get_all_user_orders(self):
-            self.client.post('/api/v2/auth/signup',data=json.dumps(self.user2),content_type='application/json')
-            #test for right details
-            login_response = self.client.post('/api/v2/auth/login',data=json.dumps(dict( username="Gafabusa2",password='123')),content_type='application/json')
-
-            login_data = json.loads(login_response.data.decode('utf-8'))
-            myheader = {'x-access-token':login_data.get('token')}
-            response = self.client.get('/api/v2/parcels/admin',headers = myheader)
-            self.assertEqual(response.status_code,200)
-
-        def test_change_destination(self):
-            self.client.post('/api/v2/auth/signup',data=json.dumps(self.user2),content_type='application/json')
-            #test for right details
-            login_response = self.client.post('/api/v2/auth/login',data=json.dumps(dict( username="Gafabusa2",password='123')),content_type='application/json')
-
-            login_data = json.loads(login_response.data.decode('utf-8'))
-            myheader = {'x-access-token':login_data.get('token')}
-            self.client.post('/api/v2/parcels',data=json.dumps(self.parcel_order), content_type="application/json")
-            response = self.client.put('/api/v2/parcels/1/destination', data=json.dumps(self.new_destination), content_type="application/json",headers = myheader)
-            self.assertEqual(response.status_code,200)
-            response_data = json.loads(response.data.decode())
-            self.assertEqual(response_data['message'],'destination of parcel delivery order changed')
-
-        def test_change_status(self):
-            self.client.post('/api/v2/auth/signup',data=json.dumps(self.user2),content_type='application/json')
-            #test for right details
-            login_response = self.client.post('/api/v2/auth/login',data=json.dumps(dict( username="Gafabusa2",password='123')),content_type='application/json')
-
-            login_data = json.loads(login_response.data.decode('utf-8'))
-            myheader = {'x-access-token':login_data.get('token')}
-            self.client.post('/api/v2/parcels',data=json.dumps(self.parcel_order), content_type="application/json",headers = myheader)
-            response = self.client.put('/api/v2/parcels/1/status', data=json.dumps(self.new_status), content_type="application/json",headers = myheader)
-            self.assertEqual(response.status_code,200)
-            response_data = json.loads(response.data.decode())
-            self.assertEqual(response['message'],'status of parcel delivery order changed')    
-
-        def test_change_present_location(self):
-            self.client.post('/api/v2/auth/signup',data=json.dumps(self.user2),content_type='application/json')
-            #test for right details
-            login_response = self.client.post('/api/v2/auth/login',data=json.dumps(dict( username="Gafabusa2",password='123')),content_type='application/json')
-
-            login_data = json.loads(login_response.data.decode('utf-8'))
-            myheader = {'x-access-token':login_data.get('token')}
-            self.client.post('/api/v2/parcels',data=json.dumps(self.parcel_order), content_type="application/json",headers = myheader)
-            response = self.client.put('/api/v2/parcels/1/presentLocation', data=json.dumps(self.new_status), content_type="application/json")
-            self.assertEqual(response.status_code,200)
-            self.assertEqual(response_data['message'],'present location of parcel delivery order changed')
 
             
 

@@ -1,38 +1,25 @@
 from flask import Blueprint, jsonify, request 
 import psycopg2
 import datetime
-import jwt
 from functools import wraps
 from application import app
 from werkzeug.security import generate_password_hash, check_password_hash
-# from application.api.db import DatabaseConnection
+from application.api.models.db import DatabaseConnection
 from application.api.models.user import User
 from application.api.models.parcels import Parcel
- 
+from flask_jwt_extended import (
+    JWTManager, jwt_required, create_access_token,
+    get_jwt_identity
+)
+
+jwt = JWTManager(app)
+app.config['JWT_SECRET_KEY'] = '\x01\n=:\x87\xe1\x02\xca\x81\x8b\x0c\xe4Y=\x87\xb7\xa8\x89.<\x95\x90\xbb\x06'
  
 mod = Blueprint('Parcel',__name__, url_prefix='/api/v2/')
 
 user_object = User()
 parcel_object = Parcel()
-# conn_object = DatabaseConnection()
-
-def token_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        token = None
-        if 'x-access-token' in request.headers:
-            token = request.headers['x-access-token'] 
-        if not token:
-            return jsonify({'message':'Token is missing !'}),401
-        try:
-            data = jwt.decode(token,app.config['SECRET_KEY'], algorithms=['HS256'])
-            current_user = data['user_id']
-
-        except:
-            return jsonify({'message':'Token is required'}),401
-           
-        return f(current_user, *args, **kwargs)
-    return decorated
+conn_object = DatabaseConnection()
  
 @mod.route('/')
 def index():
@@ -62,26 +49,26 @@ def login():
     if not user:
         return jsonify({'message':'Verification of credentials failed !'}),401
     if check_password_hash(user['password'],data['password']):
-    # if user['password'] == data['password']:
-        token = jwt.encode({'user_id':user['user_id'], 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'], algorithm='HS256')
-        return jsonify({'token':token.decode('UTF-8')}),200
-        
+        token = create_access_token(identity=user['user_id'])
+        return jsonify({'token':token}), 200        
     return jsonify({'message':'password does not match !'})
 
 @mod.route('/parcels', methods=['POST'])
-@token_required
-def make_order(current_user):
+@jwt_required
+def make_order():
+    current_user = get_jwt_identity()
     user  = user_object.get_user_by_id(current_user)
     if user['admin'] ==  True:
         return  jsonify({'message':'This is a normal user route'}),401
     data = request.get_json()
-    parcel_object.create_parcel_order(data['parcel_description'],data['parcel_weight'],data['parcel_source'],data['parcel_destination'],data['receiver_name'],data['receiver_telephone'],data['current_location'],data['status'])
+    parcel_object.create_parcel_order(data['parcel_description'],data['parcel_weight'],data['parcel_source'],data['parcel_destination'],data['receiver_name'],data['receiver_telephone'],data['current_location'],data['status'], current_user)
     return jsonify({'message':'order placed successfully'}),201
 
 
 @mod.route('/parcels', methods=['GET'])
-@token_required
-def get_user_specific_orders(current_user):
+@jwt_required
+def get_user_specific_orders():
+    current_user = get_jwt_identity()
     user  = user_object.get_user_by_id(current_user)
     if user['admin'] ==  True:
         return  jsonify({'message':'This is a normal user route'}),401
@@ -95,7 +82,9 @@ def get_user_specific_orders(current_user):
 
 
 @mod.route('/parcels/<int:parcelId>/destination', methods=['PUT'])
-def change_destination(current_user,parcelId):
+@jwt_required
+def change_destination(parcelId):
+    current_user = get_jwt_identity()
     user  = user_object.get_user_by_id(current_user)
     if user['admin'] ==  True:
         return  jsonify({'message':'This is a normal user route'}),401
@@ -107,8 +96,9 @@ def change_destination(current_user,parcelId):
     return jsonify({'message':'destination of parcel delivery order changed'}),200
 
 @mod.route('/parcels/<int:parcelId>/status', methods=['PUT'])
-@token_required
-def status(current_user,parcelId):
+@jwt_required
+def status(parcelId):
+    current_user = get_jwt_identity()
     user  = user_object.get_user_by_id(current_user)
     if user['admin'] ==  False:
         return  jsonify({'message':'This is an admin route, you are not authorized to access it'}),401
@@ -121,8 +111,9 @@ def status(current_user,parcelId):
     return jsonify({'message':'status of parcel delivery order changed'}),200
 
 @mod.route('/parcels/<int:parcelId>/presentLocation',methods=['PUT'])
-@token_required
-def change_present_location(current_user,parcelId):
+@jwt_required
+def change_present_location(parcelId):
+    current_user = get_jwt_identity()
     user  = user_object.get_user_by_id(current_user)
     if user['admin'] ==  False:
         return  jsonify({'message':'This is an admin route, you are not authorized to access it'}),401
@@ -135,8 +126,10 @@ def change_present_location(current_user,parcelId):
     return jsonify({'message':'present location of parcel delivery order changed'}),200
 
 
-@mod.route('/parcels/admin', methods=['GET'])
-def get_all_user_orders(current_user):
+@mod.route('/admin/parcels', methods=['GET'])
+@jwt_required
+def get_all_user_orders():
+    current_user = get_jwt_identity()
     user  = user_object.get_user_by_id(current_user)
     if user['admin'] ==  False:
         return  jsonify({'message':'This is an admin route, you are not authorized to access it'}),401
@@ -150,3 +143,11 @@ def get_all_user_orders(current_user):
     for order in placed_orders:
         output.append(order)
     return jsonify({'placed orders':output}),200
+
+@mod.route('/promote/<username>',methods=['PUT'])
+def promote_user(username):
+    result_set =user_object.promoter(username)
+    if result_set:
+        return jsonify({'message':username + ' promoted to admin'}),200
+    return jsonify({'message':'user promotion failed'})
+    
