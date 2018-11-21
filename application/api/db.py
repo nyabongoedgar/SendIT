@@ -103,7 +103,7 @@ class DatabaseConnection:
         for table in tables:
             sql = 'DROP TABLE IF EXISTS {}'.format(table)
             self.cursor.execute(sql)
-            self.conn.commit()
+            
 
    
 
