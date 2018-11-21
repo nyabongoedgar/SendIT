@@ -15,5 +15,5 @@ omit =
 	*/tests/*
       requirements.txt
       coveralls.yml
-      api/db.py
-      api/utils
+      */db.py
+      */utils.py
