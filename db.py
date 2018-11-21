@@ -6,11 +6,11 @@ import os,uuid
 class DatabaseConnection:
 
     def __init__(self):
-        db = os.getenv('DATABASE_NAME')
+        self.database = app.config['DATABASE']
         
 
         try:
-            self.connection = psycopg2.connect(dbname=db, user='postgres', host='localhost', password='password', port='5432')
+            self.connection = psycopg2.connect(self.database)
 
             self.connection.autocommit = True
             self.cursor = self.connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)

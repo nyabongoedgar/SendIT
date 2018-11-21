@@ -6,14 +6,16 @@ services:
   - postgresql
 env:
   global:
-    - APP_SETTINGS=test_db
+    - export DEPLOYMENT_CONF=Deployment
+    - export CONFIG_NAME=deployment
 
 install:
   - pip install -r requirements.txt
 
 before script:
-  - psql -c 'createdb test_db;' -U postgres
-  - export DATABASE_NAME=test_db
+  - export DEPLOYMENT_CONF=Deployment
+  - export CONFIG_NAME=deployment
+  - psql -c 'CREATE DATABASE store_manager;' -U postgres
 
 script:
   - py.test --cov=application tests/
