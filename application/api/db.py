@@ -62,7 +62,7 @@ class DatabaseConnection:
         sql = "UPDATE table parcel_orders SET parcel_destination = '{}' WHERE parcel_id = '{}'".format(new_destination,parcel_id)
         self.cursor.execute(sql)
         rowcount = self.cursor.rowcount
-		return rowcount
+        return rowcount
 
 
     def get_user_specific_parcel_orders(self,user_id):
@@ -90,13 +90,13 @@ class DatabaseConnection:
         sql = "UPDATE table parcel_orders SET status = '{}' WHERE parcel_id = '{}' ".format(new_status,parcel_id)
         self.cursor.execute(sql)
         rowcount = self.cursor.rowcount
-		return rowcount
+        return rowcount
 
     def change_parcel_current_location(self, new_location, parcel_id):
         sql = "UPDATE table parcel_orders SET current_location ='{}' WHERE parcel_id = '{}'".format(new_location,parcel_id) 
         self.cursor.execute(sql)    
         rowcount = self.cursor.rowcount
-		return self.cursor.rowcount
+        return rowcount
     
   
     def drop_tables(self, *tables):
