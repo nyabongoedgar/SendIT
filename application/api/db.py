@@ -6,7 +6,7 @@ import os, datetime, uuid
 class DatabaseConnection:
 
     def __init__(self):
-        db = os.environ['DATABASE_NAME']
+        db = os.getenv('DATABASE_NAME')
         
 
         try:

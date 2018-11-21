@@ -1,0 +1,19 @@
+[report]
+omit = 
+      */python?.?/*
+      */__pycache__/
+       *.py[cod]
+       *$py.class
+      */.pyc
+      */.pytest_cache/*
+      */venv 
+      */simplejson/*
+      *Procfile
+      */usr/lib/python3/dist-packages/*
+      *__init__.py*
+	*/models.py
+	*/tests/*
+      requirements.txt
+      coveralls.yml
+      api/db.py
+      api/utils
