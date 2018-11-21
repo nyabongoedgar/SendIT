@@ -1,10 +1,9 @@
 from flask import Blueprint, jsonify, request 
 import psycopg2
 import datetime
-from functools import wraps
 from application import app
 from werkzeug.security import generate_password_hash, check_password_hash
-from application.api.models.db import DatabaseConnection
+from db import DatabaseConnection
 from application.api.models.user import User
 from application.api.models.parcels import Parcel
 from flask_jwt_extended import (
@@ -33,7 +32,7 @@ def register_user():
     password = data.get('password') 
     user = user_object.user(username)  
     if user is not None:
-        return jsonify({'message':'Username already exists'}),401 
+        return jsonify({'message':'Username already exists'}),400 
     hashed_password = generate_password_hash(password, method='sha256')
     user_object.register_user(username,email,hashed_password)
     return jsonify({'message':'User registered successfully'}),201
@@ -90,8 +89,8 @@ def change_destination(parcelId):
         return  jsonify({'message':'This is a normal user route'}),401
     data = request.get_json()
     new_destination = data['destination']
-    result_set = conn.object.change_parcel_destination(new_destination,parcelId)
-    if result_set is not 1:
+    result_set = parcel_object.change_parcel_destination(new_destination,parcelId)
+    if result_set == -1:
         return jsonify({'message':'Failed to update parcel delivery order destination'}),400
     return jsonify({'message':'destination of parcel delivery order changed'}),200
 
@@ -105,11 +104,11 @@ def status(parcelId):
     data = request.get_json()
     new_status = data['status']
     result_set = parcel_object.change_parcel_status(new_status,parcelId)
-    if result_set is not 1:
+    if result_set == -1:
         return jsonify({'message':'Failed to update status of delivery order'}),400
 
     return jsonify({'message':'status of parcel delivery order changed'}),200
-
+    
 @mod.route('/parcels/<int:parcelId>/presentLocation',methods=['PUT'])
 @jwt_required
 def change_present_location(parcelId):
@@ -120,7 +119,7 @@ def change_present_location(parcelId):
     data = request.get_json()
     present_location = data['present_location']
     result_set = parcel_object.change_parcel_current_location(present_location,parcelId)
-    if result_set is not 1:
+    if result_set == -1:
         return jsonify({'message':'Failed to update present location of delivery order'}),400
 
     return jsonify({'message':'present location of parcel delivery order changed'}),200
@@ -133,7 +132,7 @@ def get_all_user_orders():
     user  = user_object.get_user_by_id(current_user)
     if user['admin'] ==  False:
         return  jsonify({'message':'This is an admin route, you are not authorized to access it'}),401
-    user  = parcel_object.get_user_by_id(current_user)
+    user  = user_object.get_user_by_id(current_user)
     if user['admin'] ==  False:
         return  jsonify({'message':'This is a normal user route'}),401
     output = []

@@ -1,4 +1,4 @@
-from application.api.models.db import DatabaseConnection
+from db import DatabaseConnection
 class User:
     def __init__(self):
         self.db_object = DatabaseConnection()

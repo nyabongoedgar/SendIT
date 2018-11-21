@@ -1,4 +1,4 @@
-from application.api.models.db import DatabaseConnection
+from db import DatabaseConnection
 from application.api.utils import Helpers 
 import datetime
 class Parcel:
