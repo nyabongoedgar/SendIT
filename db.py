@@ -9,7 +9,7 @@ class DatabaseConnection:
         db_name = os.getenv('DB_NAME')
 
         try:
-            self.connection = psycopg2.connect(db=db_name,user='fvheujobpptfos', host='ec2-23-21-201-12.compute-1.amazonaws.com',password='5b404bb6671defebfed8c63f4df98f14594660f26675b1c225ddc97b51c5cee3',port='5432')
+            self.connection = psycopg2.connect(db=db_name,user='postgres', host='localhost',password='',port='5432')
 
             self.connection.autocommit = True
             self.cursor = self.connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
