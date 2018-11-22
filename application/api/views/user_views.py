@@ -1,5 +1,5 @@
 """ This module defines user routes """
-
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Blueprint, jsonify, request 
 import datetime, re
 from application.api.models.user import User
