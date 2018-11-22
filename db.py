@@ -9,18 +9,15 @@ class DatabaseConnection:
     """ This class defines the database connection """
 
     def __init__(self):
-<<<<<<< HEAD
         # db_name = os.getenv('DB_NAME')
 
         try:
             self.connection = psycopg2.connect(dbname='defb17uf0pchi7',user='fvheujobpptfos', host='ec2-23-21-201-12.compute-1.amazonaws.com',password='5b404bb6671defebfed8c63f4df98f14594660f26675b1c225ddc97b51c5cee3',port='5432')
-=======
         """ This method initializes the database connection """
         db_name = os.getenv('DATABASE_NAME')
 
         try:
             self.connection = psycopg2.connect(dbname=db_name,user='postgres', host='localhost',password='password',port='5432')
->>>>>>> ft-challenge-three
 
             self.connection.autocommit = True
             self.cursor = self.connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)

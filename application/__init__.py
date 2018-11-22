@@ -9,9 +9,7 @@ app.register_blueprint(api.views.user_views.user_blueprint)
 
 app.config.from_object('config.ProductionConfig')
 
-# import config
-# app.config.from_object(config.ProductionConfig)
-# app.config[DEBUG_MODE]
+
 
 
 
