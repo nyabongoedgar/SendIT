@@ -19,13 +19,13 @@ class TestViews(unittest.TestCase):
         # testing with user below
         self.client.post('/api/v2/auth/signup',data=json.dumps(self.user2),content_type='application/json')
         login_response = self.client.post('/api/v2/auth/login',data=json.dumps(dict( username="Gafabusa2",password='123')),content_type='application/json')
-        login_data = json.loads(login_response.data.decode('utf-8'))
+        login_data = json.loads(login_response.data.decode())
         self.token = login_data.get('token')
         #admin token below
         self.client.post('/api/v2/auth/signup',data=json.dumps(self.admin_user),content_type='application/json')
         self.client.put('/api/v2/promote/timo')
         admin_login_response = self.client.post('/api/v2/auth/login',data=json.dumps(dict( username="timo",password='123')),content_type='application/json')
-        admin_login_data = json.loads(admin_login_response.data.decode('utf-8')) 
+        admin_login_data = json.loads(admin_login_response.data.decode()) 
         self.admin_token = admin_login_data.get('token')
         
         
@@ -79,12 +79,7 @@ class TestViews(unittest.TestCase):
         self.assertEqual(response.status_code,200)
         response_data = json.loads(response.data.decode())
         self.assertEqual(response_data['message'],'destination of parcel delivery order changed')
-
-    # def test_change_destination_with_wrong_id(self):
-    #     response = self.client.put('/api/v2/parcels/900/destination', data=json.dumps(self.new_destination), content_type="application/json", headers={'Authorization': 'Bearer ' + self.token})
-    #     self.assertEqual(response.status_code,400)
-    #     response_data = json.loads(response.data.decode())
-    #     self.assertEqual(response_data['message'],'Failed to update parcel delivery order destination')    
+   
 
     def test_change_destination_as_admin(self):
         response = self.client.put('/api/v2/parcels/1/destination', data=json.dumps(self.new_destination), content_type="application/json", headers={'Authorization': 'Bearer ' + self.admin_token})

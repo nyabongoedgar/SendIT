@@ -48,18 +48,18 @@ class TestViews(unittest.TestCase):
 
     def test_login(self):
         self.client.post('/api/v2/auth/signup',data=json.dumps(self.user),content_type='application/json')
-        #test for right details
+     
         response = self.client.post('/api/v2/auth/login',data=json.dumps(dict( username="Micky",password='123')),content_type='application/json')
         self.assertEqual(response.status_code,200)
-        response_data = json.loads(response.data.decode('utf-8'))
+        response_data = json.loads(response.data.decode())
         self.assertTrue(response_data.get('token'))
            
-        #test for wrong password
+       
         response_2 = self.client.post('/api/v2/auth/login',data=json.dumps(dict( username="Dickson",password='j4g874t2')),content_type='application/json')
         
-        response_2_data = json.loads(response_2.data.decode('utf-8'))
+        response_2_data = json.loads(response_2.data.decode())
         self.assertEqual(response_2_data['message'],'Verification of credentials failed !')
-        # wrong details
+       
         wrong_data = self.client.post('/api/v2/auth/login',data=json.dumps(dict( username="Micky",password="j4g874t2")),content_type='application/json')
         response3 = json.loads(wrong_data.data.decode())
         self.assertEqual(response3['message'],'password does not match !')
