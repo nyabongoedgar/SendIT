@@ -64,8 +64,7 @@ def change_destination(parcelId):
         return  jsonify({'message':'This is a normal user route'}),401
     parcel = parcel_object.get_one_user_orders(current_user)
     if parcel is None:
-        return jsonify({'message':'There are no orders for the provided parcelId'}),200
-    if parcel['user_id'] == current_user:pass
+        return jsonify({'message':'There are no orders for the provided parcelId'}),400
     data = request.get_json()
     new_destination = data['destination']
     result_set = parcel_object.change_parcel_destination(new_destination,parcelId)
