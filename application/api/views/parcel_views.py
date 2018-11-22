@@ -20,6 +20,7 @@ conn_object = DatabaseConnection()
  
 @parcel.route('/')
 def index():
+    """ This is the index route, returns jsonified welcome message """
     return jsonify({'message':'Welcome to the SendIT application'}),200   
 
 @parcel.route('/parcels', methods=['POST'])
@@ -44,7 +45,7 @@ def get_user_orders():
     if user['admin'] ==  True:
         return  jsonify({'message':'This is a normal user route'}),401
     output = []
-    placed_orders  = parcel_object.get_user_specific_parcel_orders(user['user_id'])
+    placed_orders  = parcel_object.get_one_user_orders(user['user_id'])
     if placed_orders is None:
         return jsonify({'message':'No orders placed for this user'})
     for order in placed_orders:
@@ -110,7 +111,7 @@ def get_all_user_orders():
         return  jsonify({'message':'This is an admin route, you are not authorized to access it'}),401
     user  = user_object.get_user_by_id(current_user)
     output = []
-    placed_orders  = parcel_object.get_user_parcel_orders(user['user_id'])
+    placed_orders  = parcel_object.get_all_orders()
     if placed_orders is None:
         return jsonify({'message':'No orders placed for this user'})
     for order in placed_orders:
