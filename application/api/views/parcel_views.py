@@ -46,7 +46,7 @@ def get_user_orders():
     output = []
     placed_orders  = parcel_object.get_one_user_orders(user['user_id'])
     if placed_orders is None:
-        return jsonify({'message':'No orders placed for this user'})
+        return jsonify({'message':'No orders placed for this user'}),200
     for order in placed_orders:
         output.append(order)
     return jsonify({'placed orders':output}),200
