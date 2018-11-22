@@ -15,4 +15,13 @@ omit =
 	*/tests/*
       requirements.txt
       coveralls.yml
+<<<<<<< HEAD
       api/models.py
+=======
+      */db.py
+      */utils.py
+      */config.py
+      */settings.py
+      */parcels.py
+      */user.py
+>>>>>>> feedback-two

@@ -1,4 +1,8 @@
 # Byte-compiled / optimized / DLL files
+<<<<<<< HEAD
+=======
+htmlcov/
+>>>>>>> feedback-two
 .vscode/
 __pycache__/
 *.py[cod]
