@@ -37,13 +37,13 @@ class Helpers:
         return price
 
 
-    staticmethod
+    @staticmethod
     def validate_strings(args):
         for i in args:
             if not isinstance(i,str) or i.isspace():
                 return 'Data provided should be a string and should not be a space'
 
-    staticmethod
+    @staticmethod
     def validate_integer(args):
         for i in args:
             if not isinstance(i,int) or i < 0:
