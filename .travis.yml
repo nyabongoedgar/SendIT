@@ -15,7 +15,7 @@ install:
 before script:
   - export DEPLOYMENT_CONF=Deployment
   - export CONFIG_NAME=deployment
-  - psql -c 'CREATE DATABASE store_manager;' -U postgres
+  - psql -c 'CREATE DATABASE sendit_test_db;' -U postgres
 
 script:
   - py.test --cov=application tests/
