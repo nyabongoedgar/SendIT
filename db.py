@@ -13,7 +13,7 @@ class DatabaseConnection:
         db_name = os.getenv('DATABASE_NAME')
 
         try:
-            self.connection = psycopg2.connect(dbname=db_name,user='postgres', host='localhost',password='password',port='5432')
+            self.connection = psycopg2.connect(dbname=db_name,user='postgres', host='localhost',password='',port='5432')
 
             self.connection.autocommit = True
             self.cursor = self.connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
