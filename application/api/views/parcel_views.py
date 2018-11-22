@@ -50,7 +50,7 @@ def get_user_orders():
     for order in placed_orders:
         output.append(order)
     if len(output) == 0:
-        return jsonify({'message':'There are no orders at the moment'}),200
+        return jsonify({'message':'You have not yet made any orders'}),200
     return jsonify({'placed orders':output}),200
 
 
