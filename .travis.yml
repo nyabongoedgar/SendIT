@@ -6,14 +6,13 @@ services:
   - postgresql
 env:
   global:
-    - DB_NAME=test_db
+    - APP_SETTINGS=test_db
 
 install:
   - pip install -r requirements.txt
 
 before script:
   - psql -c 'createdb test_db;' -U postgres
-  - export DB_NAME=test_db
 
 script:
   - py.test --cov=application tests/

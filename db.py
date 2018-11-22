@@ -10,7 +10,7 @@ class DatabaseConnection:
 
     def __init__(self):
         """ This method initializes the database connection """
-        db_name = os.getenv('DB_NAME')
+        db_name = os.getenv('APP_SETTINGS')
 
         try:
             self.connection = psycopg2.connect(db=db_name,user='postgres', host='localhost',password='',port='5432')
