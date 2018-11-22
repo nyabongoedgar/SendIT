@@ -1,6 +1,7 @@
+""" This module defines uthe parcel routes """
+
 from flask import Blueprint, jsonify, request 
-import psycopg2
-import datetime, re
+import re
 from application import app
 from werkzeug.security import generate_password_hash, check_password_hash
 from db import DatabaseConnection

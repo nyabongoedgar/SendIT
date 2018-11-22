@@ -1,3 +1,5 @@
+""" This module defines user routes """
+
 from flask import Blueprint, jsonify, request 
 import datetime, re
 from application.api.models.user import User
