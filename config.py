@@ -1,3 +1,4 @@
+""" This module defines and sets the environment  """
 import os
 class BaseConfig(object):
     DEBUG = False
@@ -6,14 +7,17 @@ class BaseConfig(object):
 
 
 class TestConfig(BaseConfig):
+    """ This class sets the TEST environment variables """
     DEBUG = True
     TESTING = True
     WTF_CSRF_ENABLED = False
 
 
 class DevelopmentConfig(BaseConfig):
+    """ This class sets the DEVELOPMENT environment variables """
     DEBUG = True
 
 
 class ProductionConfig(BaseConfig):
+    """ This class sets the PRODUCTION environment variables """
     DEBUG = False

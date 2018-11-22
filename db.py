@@ -1,15 +1,19 @@
+""" This module contains the database connection and some database utility functions  """
+
 import psycopg2
 import psycopg2.extras
 import os,uuid
 
 
 class DatabaseConnection:
+    """ This class defines the database connection """
 
     def __init__(self):
+        """ This method initializes the database connection """
         db_name = os.getenv('DB_NAME')
 
         try:
-            self.connection = psycopg2.connect(db=db_name,user='postgres', host='localhost',password='',port='5432')
+            self.connection = psycopg2.connect(db=db_name,user='postgres', host='localhost',password='password',port='5432')
 
             self.connection.autocommit = True
             self.cursor = self.connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
@@ -31,6 +35,7 @@ class DatabaseConnection:
 
   
     def drop_tables(self, *tables):
+        """ This method drops tables that are passed as a list """
         for table in tables:
             sql = 'DROP TABLE IF EXISTS {} CASCADE'.format(table)
             self.cursor.execute(sql)

@@ -26,6 +26,7 @@ def index():
  
 @mod.route('/auth/signup', methods = ['POST']) 
 def register_user():
+    """ This function registers a user by using his username,password and email """
     data = request.get_json()
     email = data.get('email')
     username = data.get('username')
@@ -48,7 +49,8 @@ def register_user():
    
 
 @mod.route("/auth/login", methods=['POST'])
-def login(): 
+def login():
+    """ This function signs in  user by using his username and password """ 
     data = request.get_json() 
     if not data or not data.get('username') or not data.get('password'):
         return jsonify({'message':'No data has been sent'}),400
@@ -63,6 +65,7 @@ def login():
 @mod.route('/parcels', methods=['POST'])
 @jwt_required
 def make_order():
+    """ This function enables a user to make a parcel delivery order """
     current_user = get_jwt_identity()
     user  = user_object.get_user_by_id(current_user)
     if user['admin'] ==  True:
@@ -75,6 +78,7 @@ def make_order():
 @mod.route('/parcels', methods=['GET'])
 @jwt_required
 def get_user_orders():
+    """ This function enables a user to fetch his parcel delivery orders """
     current_user = get_jwt_identity()
     user  = user_object.get_user_by_id(current_user)
     if user['admin'] ==  True:
@@ -91,6 +95,7 @@ def get_user_orders():
 @mod.route('/parcels/<int:parcelId>/destination', methods=['PUT'])
 @jwt_required
 def change_destination(parcelId):
+    """ This function enables a user to change the destination of a parcel delivery order """
     current_user = get_jwt_identity()
     user  = user_object.get_user_by_id(current_user)
     if user['admin'] ==  True:
@@ -105,6 +110,7 @@ def change_destination(parcelId):
 @mod.route('/parcels/<int:parcelId>/status', methods=['PUT'])
 @jwt_required
 def status(parcelId):
+    """ This function enables an admin user to change the status a parcel delivery order """
     current_user = get_jwt_identity()
     user  = user_object.get_user_by_id(current_user)
     if user['admin'] ==  False:
@@ -120,6 +126,7 @@ def status(parcelId):
 @mod.route('/parcels/<int:parcelId>/presentLocation',methods=['PUT'])
 @jwt_required
 def change_present_location(parcelId):
+    """ This function enables a user to change the present location of a parcel delivery order """
     current_user = get_jwt_identity()
     user  = user_object.get_user_by_id(current_user)
     if user['admin'] ==  False:
@@ -136,6 +143,7 @@ def change_present_location(parcelId):
 @mod.route('/admin/parcels', methods=['GET'])
 @jwt_required
 def get_all_user_orders():
+    """ This function enables an admin user to get all parcel delivery orders in the system """
     current_user = get_jwt_identity()
     user  = user_object.get_user_by_id(current_user)
     if user['admin'] ==  False:
@@ -151,6 +159,7 @@ def get_all_user_orders():
 
 @mod.route('/promote/<username>',methods=['PUT'])
 def promote_user(username):
+    """ This function promotes a user to admin """
     user = user_object.user(username)
     if user is None:
         return jsonify({'message':'user promotion failed'}),400
