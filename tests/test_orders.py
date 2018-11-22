@@ -19,13 +19,13 @@ class TestViews(unittest.TestCase):
         # testing with user below
         self.client.post('/api/v2/auth/signup',data=json.dumps(self.user2),content_type='application/json')
         login_response = self.client.post('/api/v2/auth/login',data=json.dumps(dict( username="Gafabusa2",password='123')),content_type='application/json')
-        login_data = json.loads(login_response.data.decode('utf-8'))
+        login_data = json.loads(login_response.data.decode())
         self.token = login_data.get('token')
         #admin token below
         self.client.post('/api/v2/auth/signup',data=json.dumps(self.admin_user),content_type='application/json')
         self.client.put('/api/v2/promote/timo')
         admin_login_response = self.client.post('/api/v2/auth/login',data=json.dumps(dict( username="timo",password='123')),content_type='application/json')
-        admin_login_data = json.loads(admin_login_response.data.decode('utf-8')) 
+        admin_login_data = json.loads(admin_login_response.data.decode()) 
         self.admin_token = admin_login_data.get('token')
         
         
