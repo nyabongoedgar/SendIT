@@ -11,4 +11,4 @@ load_dotenv()
 # env_path = Path('.') / '.env'
 # load_dotenv(dotenv_path=env_path)
 
-DATABASE_NAME = os.getenv("DATABASE_NAME")
+# DATABASE_NAME = os.getenv("DATABASE_NAME")
