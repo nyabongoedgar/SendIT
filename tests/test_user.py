@@ -43,6 +43,29 @@ class TestViews(unittest.TestCase):
         response = json.loads(user_one.data.decode()) 
         self.assertEqual(response['message'],'Username already exists')
         self.assertEqual(user_one.status_code,400)
+
+    def test_user_registration_without_password(self):
+        user_one = self.client.post('/api/v2/auth/signup',data=json.dumps({"username":"Gafabusa2","email":"gafabusa@gmail.com"}),content_type='application/json')
+        response = json.loads(user_one.data.decode()) 
+        self.assertEqual(response['message'],'Password field can not be left empty.')
+        self.assertEqual(user_one.status_code,400)
+    def test_user_registration_without_email(self):
+        user_one = self.client.post('/api/v2/auth/signup',data=json.dumps({"username":"Gafabusa2","password":"123"}),content_type='application/json')
+        response = json.loads(user_one.data.decode()) 
+        self.assertEqual(response['message'],'Email field can not be empty.')
+        self.assertEqual(user_one.status_code,400)
+
+    def test_user_registration_without_username(self):
+        user_one = self.client.post('/api/v2/auth/signup',data=json.dumps({"email":"gafabusa@gmail.com","password":"123"}),content_type='application/json')
+        response = json.loads(user_one.data.decode()) 
+        self.assertEqual(response['message'],'Username field can not be empty.')
+        self.assertEqual(user_one.status_code,400)
+
+    def test_user_registration_with_invalid_email(self):
+        user_one = self.client.post('/api/v2/auth/signup',data=json.dumps({"username":"Gafabusa2","email":"gafabusa.com","password":"123"}),content_type='application/json')
+        response = json.loads(user_one.data.decode()) 
+        self.assertEqual(response['message'],'Enter a valid email address.')
+        self.assertEqual(user_one.status_code,400)
               
 
 
