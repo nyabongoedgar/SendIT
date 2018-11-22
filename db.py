@@ -46,6 +46,6 @@ class DatabaseConnection:
 
 if __name__ == '__main__':
     conn = DatabaseConnection()
-    conn.cursor.execute()
+    
      
     
