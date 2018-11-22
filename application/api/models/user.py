@@ -1,5 +1,6 @@
 """ This module defines user methods for registration login and user queries """
 from db import DatabaseConnection
+
 class User:
     """ Users contains methods that operate on the user object """
 
