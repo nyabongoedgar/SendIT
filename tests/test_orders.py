@@ -79,12 +79,7 @@ class TestViews(unittest.TestCase):
         self.assertEqual(response.status_code,200)
         response_data = json.loads(response.data.decode())
         self.assertEqual(response_data['message'],'destination of parcel delivery order changed')
-
-    # def test_change_destination_with_wrong_id(self):
-    #     response = self.client.put('/api/v2/parcels/900/destination', data=json.dumps(self.new_destination), content_type="application/json", headers={'Authorization': 'Bearer ' + self.token})
-    #     self.assertEqual(response.status_code,400)
-    #     response_data = json.loads(response.data.decode())
-    #     self.assertEqual(response_data['message'],'Failed to update parcel delivery order destination')    
+   
 
     def test_change_destination_as_admin(self):
         response = self.client.put('/api/v2/parcels/1/destination', data=json.dumps(self.new_destination), content_type="application/json", headers={'Authorization': 'Bearer ' + self.admin_token})
