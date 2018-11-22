@@ -23,7 +23,7 @@ class TestViews(unittest.TestCase):
         self.token = login_data.get('token')
         #admin token below
         self.client.post('/api/v2/auth/signup',data=json.dumps(self.admin_user),content_type='application/json')
-        self.client.put('/api/v2/promote/timo')
+        self.client.put('/api/v2/promote/timo?key=mysimpleapikey')
         admin_login_response = self.client.post('/api/v2/auth/login',data=json.dumps(dict( username="timo",password='123')),content_type='application/json')
         admin_login_data = json.loads(admin_login_response.data.decode()) 
         self.admin_token = admin_login_data.get('token')

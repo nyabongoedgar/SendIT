@@ -1,15 +1,25 @@
 """ This module defines user routes """
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask import Blueprint, jsonify, request 
+from flask import Blueprint, jsonify, request, abort
 import datetime, re
 from application.api.models.user import User
 from application import app
-
+from functools import wraps
 
 from flask_jwt_extended import (
     JWTManager, jwt_required, create_access_token,
     get_jwt_identity
 )
+
+def require_appkey(view_function):
+    @wraps(view_function)
+   
+    def decorated_function(*args, **kwargs):
+        if request.args.get('key') and request.args.get('key') == 'mysimpleapikey':
+            return view_function(*args, **kwargs)
+        else:
+            abort(401)
+    return decorated_function
 
 user_object = User()
 
@@ -56,6 +66,7 @@ def login():
     return jsonify({'message':'password does not match !'}),401
 
 @user_blueprint.route('/promote/<username>',methods=['PUT'])
+@require_appkey
 def promote_user(username):
     """ This function promotes a user to admin """
     user = user_object.user(username)

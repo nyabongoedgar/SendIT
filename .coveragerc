@@ -16,7 +16,6 @@ omit =
       requirements.txt
       coveralls.yml
       */db.py
-      */utils.py
       */config.py
       */settings.py
       */parcels.py

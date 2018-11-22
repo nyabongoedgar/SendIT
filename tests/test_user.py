@@ -74,21 +74,25 @@ class TestViews(unittest.TestCase):
     
 
     def test_promote_user(self):
-        response = self.client.put('/api/v2/promote/Gafabusa2')
+        response = self.client.put('/api/v2/promote/Gafabusa2?key=mysimpleapikey')
         self.assertEqual(response.status_code,200)
         response_data = json.loads(response.data.decode())
         self.assertEqual(response_data['message'],'Gafabusa2 promoted to admin')
 
     def test_promote_wrong_user(self):
-        response = self.client.put('/api/v2/promote/78')
+        response = self.client.put('/api/v2/promote/78?key=mysimpleapikey')
         self.assertEqual(response.status_code,400)
         response_data = json.loads(response.data.decode())
         self.assertEqual(response_data['message'],'user promotion failed')
 
+    def test_promote_user_without_key(self):
+        response = self.client.put('/api/v2/promote/Gafabusa2')
+        self.assertEqual(response.status_code,401)
+
+    def test_promote_user_with_wrong_key(self):
+        wrong_api_key = self.client.put('/api/v2/promote/Gafabusa2?key=peoplepower')
+        self.assertEqual(wrong_api_key.status_code,401)
     
-
-
-
         
 
             
