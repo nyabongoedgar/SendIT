@@ -49,6 +49,8 @@ def get_user_orders():
         return jsonify({'message':'No orders placed for this user'})
     for order in placed_orders:
         output.append(order)
+    if len(output) == 0:
+        return jsonify({'message':'There are no orders at the moment'}),200
     return jsonify({'placed orders':output}),200
 
 
