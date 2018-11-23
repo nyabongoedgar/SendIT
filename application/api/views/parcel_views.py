@@ -111,10 +111,10 @@ def get_all_user_orders():
     user  = user_object.get_user_by_id(current_user)
     output = []
     placed_orders  = parcel_object.get_all_orders()
-    if placed_orders is None:
-        return jsonify({'message':'No orders placed for this user'})
     for order in placed_orders:
         output.append(order)
+    if len(output) == 0:
+        return jsonify({'message',"There are no orders placed yet"}),404
     return jsonify({'placed orders':output}),200
     
     
