@@ -45,10 +45,10 @@ def get_user_orders():
         return  jsonify({'message':'This is a normal user route'}),401
     output = []
     placed_orders  = parcel_object.get_one_user_orders(user['user_id'])
-    if placed_orders is None:
-        return jsonify({'message':'No orders placed for this user'})
     for order in placed_orders:
         output.append(order)
+    if len(output) == 0:
+        return jsonify({'message',"There are no orders placed yet"}),404
     return jsonify({'placed orders':output}),200
 
 
