@@ -50,7 +50,7 @@ User interface hosted at https://nyabongoedgar.github.io/SendIT/UI/
   
 <li>Clone git repository <br>
   $ git clone https://github.com/nyabongoedgar/SendIT.git</li>
-<li>Switch to "develop" branch</li>
+<li>Switch to "ft-challenge-three" branch</li>
   <li>Install necessary requirements<br>
   $ pip install -r requirements.txt </li>
 <li>Run the main app file <br>
