@@ -65,7 +65,7 @@ User interface hosted at https://nyabongoedgar.github.io/SendIT/UI/
 <p>SendIT is a courier service that helps users deliver parcels to different destinations. SendIT provides courier quotes based on weight categories.</p>
 
  <hr/>
-<p> This applcation contains a set of API endpoints already defined below and use data structures to store data in memory </p>
+<p> This application contains a set of API endpoints already defined below and use data structures to store data in memory </p>
 
 
 <caption>API endpoints</caption>
@@ -82,7 +82,7 @@ User interface hosted at https://nyabongoedgar.github.io/SendIT/UI/
 
 <tr><td>PUT /parcels/parcelId/status</td>	<td>Change the status of a specific parcel delivery order</td>	</tr>
 
-tr><td>PUT /parcels/parcelId/presentLocation</td>	<td>Change the present location of a specific parcel delivery order</td>	</tr>
+<tr><td>PUT /parcels/parcelId/presentLocation</td>	<td>Change the present location of a specific parcel delivery order</td>	</tr>
 
 <tr><td>GET /parcels</td>	<td>Fetch all parcel delivery orders</td>	</tr>
 
