@@ -8,13 +8,13 @@ User interface hosted at https://nyabongoedgar.github.io/SendIT/UI/
 
 <h1> Working Endpoints</h1>
 <p><em>Before using the routes below, you should first signup and then login, After your session, you <b>must</b> logout by using the logout route</em></p>
-<p>To signup, visit, https://sendinc.herokuapp.com/api/v2/signup and provide a "username", "password" and "email", all must be a string</p>
-<p>To signin, visit, https://sendinc.herokuapp.com/api/v2/login and provide the "username" and the "password" you used to create the account.</p>
-<p>To logout, visit, https://sendinc.herokuapp.com/api/v2/logout with a get method</p>
+<p>To signup, visit, https://sendit299.herokuapp.com/api/v2/auth/signup and provide a "username", "password" and "email", all must be a string</p>
+<p>There are two kinds of users, Admin and normal user. To promote a user to <b>admin</b>, visit https://sendit299.herokuapp.com/api/v2/promote/username?key=mysimplekey
+<em>Take note of the API key that is being passed to the promote route after the user</em> </p>
+<p>To signin, visit, https://sendit299.herokuapp.com/api/v2/auth/login and provide the "username" and the "password" you used to create the account.</p>
+
 
 <ol>
-<li>POST /auth/signup, accesible at https://sendit299.herokuapp.com/api/v2/auth/signup</li>
-<li>POST /auth/login, accesible at https://sendit299.herokuapp.com/api/v2/auth/login</li>
 
 <li>POST /parcels, accessible at https://sendinc.herokuapp.com/api/v2/parcels 
 <br> A parcel order should look like this <br> 
