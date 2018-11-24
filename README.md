@@ -9,16 +9,12 @@ User interface hosted at https://nyabongoedgar.github.io/SendIT/UI/
 <h1> Working Endpoints</h1>
 <p><em>Before using the routes below, you should first signup and then login, After your session, you <b>must</b> logout by using the logout route</em></p>
 <p>To signup, visit, https://sendit299.herokuapp.com/api/v2/auth/signup and provide a "username", "password" and "email", all must be a string</p>
-<<<<<<< HEAD
 <p>There are two kinds of users, Admin and normal user. To promote a user to <b>admin</b>, visit https://sendit299.herokuapp.com/api/v2/promote/username?key=mysimplekey
 <em>Take note of the API key that is being passed to the promote route after the user</em> </p>
 <p>To signin, visit, https://sendit299.herokuapp.com/api/v2/auth/login and provide the "username" and the "password" you used to create the account.</p>
 
 
-=======
-<p>To signin, visit, https://sendit299.herokuapp.com/api/v2/auth/login and provide the "username" and the "password" you used to create the account.</p>
 <h2>Endpoints with Heroku URL</h2>
->>>>>>> a955e08b25f2e2d76d390c1bc928553d89ed77de
 <ol>
 
 <li>POST /parcels, accessible at https://sendit299.herokuapp.com/api/v2/parcels 
