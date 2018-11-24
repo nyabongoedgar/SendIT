@@ -11,6 +11,10 @@ class Config(object):
 class ProductionConfig(Config):
     """ This class sets the PRODUCTION environment variables """
     DEBUG = False
+    DB_NAME
+    USER 
+    HOST
+    
 
 class StagingConfig(Config):
     DEVELOPMENT =True
