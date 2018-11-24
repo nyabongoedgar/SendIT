@@ -1,6 +1,6 @@
 """ This module defines uthe parcel routes """
 
-from flask import Blueprint, jsonify, request 
+from flask import Blueprint, jsonify, request, g 
 from application import app
 from db import DatabaseConnection
 from application.api.models.user import User
@@ -9,7 +9,6 @@ from flask_jwt_extended import (
     jwt_required, get_jwt_identity
 )
 
- 
  
 parcel = Blueprint('Parcel',__name__, url_prefix='/api/v2/')
 
@@ -27,12 +26,11 @@ def index():
 @jwt_required
 def make_order():
     """ This function enables a user to make a parcel delivery order """
-    current_user = get_jwt_identity()
-    user  = user_object.get_user_by_id(current_user)
+    user  = user_object.get_user_by_id(get_jwt_identity())
     if user['admin'] ==  True:
         return  jsonify({'message':'This is a normal user route'}),401
     data = request.get_json()
-    parcel_object.create_parcel_order(data['parcel_description'],data['parcel_weight'],data['parcel_source'],data['parcel_destination'],data['receiver_name'],data['receiver_telephone'],data['current_location'],data['status'], current_user)
+    parcel_object.create_parcel_order(data['parcel_description'],data['parcel_weight'],data['parcel_source'],data['parcel_destination'],data['receiver_name'],data['receiver_telephone'],data['current_location'],data['status'], get_jwt_identity())
     return jsonify({'message':'order placed successfully'}),201
 
 
@@ -40,8 +38,7 @@ def make_order():
 @jwt_required
 def get_user_orders():
     """ This function enables a user to fetch his parcel delivery orders """
-    current_user = get_jwt_identity()
-    user  = user_object.get_user_by_id(current_user)
+    user  = user_object.get_user_by_id(get_jwt_identity())
     if user['admin'] ==  True:
         return  jsonify({'message':'This is a normal user route'}),401
     output = []
@@ -57,8 +54,8 @@ def get_user_orders():
 @jwt_required
 def change_destination(parcelId):
     """ This function enables a user to change the destination of a parcel delivery order """
-    current_user = get_jwt_identity()
-    user  = user_object.get_user_by_id(current_user)
+
+    user  = user_object.get_user_by_id(get_jwt_identity())
     if user['admin'] ==  True:
         return  jsonify({'message':'This is a normal user route'}),401
     data = request.get_json()
@@ -72,8 +69,7 @@ def change_destination(parcelId):
 @jwt_required
 def status(parcelId):
     """ This function enables an admin user to change the status a parcel delivery order """
-    current_user = get_jwt_identity()
-    user  = user_object.get_user_by_id(current_user)
+    user  = user_object.get_user_by_id(get_jwt_identity())
     if user['admin'] ==  False:
         return  jsonify({'message':'This is an admin route, you are not authorized to access it'}),401
     data = request.get_json()
@@ -88,8 +84,8 @@ def status(parcelId):
 @jwt_required
 def change_present_location(parcelId):
     """ This function enables a user to change the present location of a parcel delivery order """
-    current_user = get_jwt_identity()
-    user  = user_object.get_user_by_id(current_user)
+  
+    user  = user_object.get_user_by_id(get_jwt_identity())
     if user['admin'] ==  False:
         return  jsonify({'message':'This is an admin route, you are not authorized to access it'}),401
     data = request.get_json()
@@ -105,11 +101,10 @@ def change_present_location(parcelId):
 @jwt_required
 def get_all_user_orders():
     """ This function enables an admin user to get all parcel delivery orders in the system """
-    current_user = get_jwt_identity()
-    user  = user_object.get_user_by_id(current_user)
+
+    user  = user_object.get_user_by_id(get_jwt_identity())
     if user['admin'] ==  False:
         return  jsonify({'message':'This is an admin route, you are not authorized to access it'}),401
-    user  = user_object.get_user_by_id(current_user)
     output = []
     placed_orders  = parcel_object.get_all_orders()
     if placed_orders is None:
