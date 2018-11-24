@@ -16,6 +16,7 @@ parcel = Blueprint('Parcel',__name__, url_prefix='/api/v2/')
 user_object = User()
 parcel_object = Parcel()
 conn_object = DatabaseConnection()
+
  
 @parcel.route('/')
 def index():
