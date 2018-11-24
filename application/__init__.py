@@ -1,3 +1,4 @@
+import os
 from flask import Flask, Blueprint
 app = Flask(__name__)
 
@@ -7,7 +8,9 @@ app.register_blueprint(api.views.parcel_views.parcel)
 from application.api.views.user_views import user_blueprint
 app.register_blueprint(api.views.user_views.user_blueprint)
 
-app.config.from_object('config.BaseConfig')
+app.config.from_object(os.environ['APP_SETTINGS'])
+print(os.environ['APP_SETTINGS'])
+
 
 
 
