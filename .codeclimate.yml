@@ -1,0 +1,5 @@
+exclude_patterns :
+- "application/api/models/parcels.py"
+- "application/api/models/user.py"
+- "tests/"
+- "db.py"

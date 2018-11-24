@@ -9,14 +9,19 @@ User interface hosted at https://nyabongoedgar.github.io/SendIT/UI/
 <h1> Working Endpoints</h1>
 <p><em>Before using the routes below, you should first signup and then login, After your session, you <b>must</b> logout by using the logout route</em></p>
 <p>To signup, visit, https://sendit299.herokuapp.com/api/v2/auth/signup and provide a "username", "password" and "email", all must be a string</p>
+<<<<<<< HEAD
 <p>There are two kinds of users, Admin and normal user. To promote a user to <b>admin</b>, visit https://sendit299.herokuapp.com/api/v2/promote/username?key=mysimplekey
 <em>Take note of the API key that is being passed to the promote route after the user</em> </p>
 <p>To signin, visit, https://sendit299.herokuapp.com/api/v2/auth/login and provide the "username" and the "password" you used to create the account.</p>
 
 
+=======
+<p>To signin, visit, https://sendit299.herokuapp.com/api/v2/auth/login and provide the "username" and the "password" you used to create the account.</p>
+<h2>Endpoints with Heroku URL</h2>
+>>>>>>> a955e08b25f2e2d76d390c1bc928553d89ed77de
 <ol>
 
-<li>POST /parcels, accessible at https://sendinc.herokuapp.com/api/v2/parcels 
+<li>POST /parcels, accessible at https://sendit299.herokuapp.com/api/v2/parcels 
 <br> A parcel order should look like this <br> 
 {'parcel_description':'this parcel contains a phone',
 'parcel_weight':50,
@@ -29,7 +34,7 @@ User interface hosted at https://nyabongoedgar.github.io/SendIT/UI/
 <li>GET /parcels, accessible at https://sendit299.herokuapp.com/api/v2/parcels </li>
 <li>PUT /parcels/parcelId/destination accessible at https://sendit299.herokuapp.com/api/v2/parcels/parcelId/destination </li>
 <li>PUT /parcels/parcelId/status, accessible at https://sendit299.herokuapp.com/api/v2/parcels/parcelId/status </li>
-<li>PUT /parcels/parcelId/presentLocation , accessible at https://sendit299.herokuapp.com/api/v2//parcels/parcelId/presentLocation</li>
+<li>PUT /parcels/parcelId/presentLocation , accessible at https://sendit299.herokuapp.com/api/v2/parcels/parcelId/presentLocation</li>
 </ol>
 <h2> Getting Started </h2>
 <h2> Pre-requisites </h2>
@@ -51,7 +56,7 @@ User interface hosted at https://nyabongoedgar.github.io/SendIT/UI/
   
 <li>Clone git repository <br>
   $ git clone https://github.com/nyabongoedgar/SendIT.git</li>
-<li>Switch to "develop" branch</li>
+<li>Switch to "ft-challenge-three" branch</li>
   <li>Install necessary requirements<br>
   $ pip install -r requirements.txt </li>
 <li>Run the main app file <br>
@@ -66,7 +71,7 @@ User interface hosted at https://nyabongoedgar.github.io/SendIT/UI/
 <p>SendIT is a courier service that helps users deliver parcels to different destinations. SendIT provides courier quotes based on weight categories.</p>
 
  <hr/>
-<p> This applcation contains a set of API endpoints already defined below and use data structures to store data in memory </p>
+<p> This application contains a set of API endpoints already defined below and use data structures to store data in memory </p>
 
 
 <caption>API endpoints</caption>
@@ -83,7 +88,7 @@ User interface hosted at https://nyabongoedgar.github.io/SendIT/UI/
 
 <tr><td>PUT /parcels/parcelId/status</td>	<td>Change the status of a specific parcel delivery order</td>	</tr>
 
-tr><td>PUT /parcels/parcelId/presentLocation</td>	<td>Change the present location of a specific parcel delivery order</td>	</tr>
+<tr><td>PUT /parcels/parcelId/presentLocation</td>	<td>Change the present location of a specific parcel delivery order</td>	</tr>
 
 <tr><td>GET /parcels</td>	<td>Fetch all parcel delivery orders</td>	</tr>
 

@@ -44,7 +44,7 @@ def get_user_orders():
     output = []
     placed_orders  = parcel_object.get_one_user_orders(user['user_id'])
     if placed_orders is None:
-        return jsonify({'message':'No orders placed for this user'}),200
+        return jsonify({'message':'No orders placed for this user'}),404
     for order in placed_orders:
         output.append(order)
     return jsonify({'placed orders':output}),200
@@ -107,10 +107,13 @@ def get_all_user_orders():
         return  jsonify({'message':'This is an admin route, you are not authorized to access it'}),401
     output = []
     placed_orders  = parcel_object.get_all_orders()
-    if placed_orders is None:
-        return jsonify({'message':'No orders placed for this user'})
+    
     for order in placed_orders:
         output.append(order)
+        
+    if len(output) == 0:
+        return jsonify({'message',"There are no orders placed yet"}),404
+
     return jsonify({'placed orders':output}),200
     
     
