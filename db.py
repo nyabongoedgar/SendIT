@@ -11,9 +11,12 @@ class DatabaseConnection:
     def __init__(self):
         """ This method initializes the database connection """
         db_name = os.getenv('DATABASE_NAME')
+        db_user = os.getenv('DB_USER')
+        db_host = os.getenv('DB_HOST')
+        db_password = os.getenv('DB_PASSWORD')
 
         try:
-            self.connection = psycopg2.connect(dbname=db_name,user='postgres', host='localhost',password='password',port='5432')
+            self.connection = psycopg2.connect(dbname=db_name,user=db_user, host=db_host,password=db_password',port='5432')
 
             self.connection.autocommit = True
             self.cursor = self.connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
