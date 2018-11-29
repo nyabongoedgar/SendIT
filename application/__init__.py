@@ -1,5 +1,10 @@
 from flask import Flask, Blueprint
+from flask_cors import CORS
+
 app = Flask(__name__)
+CORS(app)
+
+
 
 from application.api.views.parcel_views import parcel
 app.register_blueprint(api.views.parcel_views.parcel)
