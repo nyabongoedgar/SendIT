@@ -53,7 +53,8 @@ def register_user():
 
 @user_blueprint.route("/auth/login", methods=['POST'])
 def login():
-    """ This function signs in  user by using his username and password """ 
+    """ This function signs in  user by using his username and password """
+    admin = 'not ok'
     data = request.get_json() 
     if not data or not data.get('username') or not data.get('password'):
         return jsonify({'message':'No data has been sent'}),400
@@ -62,7 +63,9 @@ def login():
         return jsonify({'message':'Verification of credentials failed !'}),401
     if check_password_hash(user['password'],data['password']):
         token = create_access_token(identity=user['user_id'])
-        return jsonify({'token':token}), 200        
+        if user['admin'] == True:
+            admin = 'ok'
+        return jsonify({'token':token,'admin':admin}), 200        
     return jsonify({'message':'password does not match !'}),401
 
 @user_blueprint.route('/promote/<username>',methods=['PUT'])
