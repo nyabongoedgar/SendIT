@@ -1,4 +1,4 @@
-""" This module defines uthe parcel routes """
+""" This module defines the parcel routes """
 
 from flask import Blueprint, jsonify, request, g 
 from application import app
@@ -47,7 +47,7 @@ def get_user_orders():
         return jsonify({'message':'No orders placed for this user'}),404
     for order in placed_orders:
         output.append(order)
-    return jsonify({'placed orders':output}),200
+    return jsonify(output),200
 
 
 @parcel.route('/parcels/<int:parcelId>/destination', methods=['PUT'])
@@ -114,6 +114,6 @@ def get_all_user_orders():
     if len(output) == 0:
         return jsonify({'message',"There are no orders placed yet"}),404
 
-    return jsonify({'placed orders':output}),200
+    return jsonify(output),200
     
     

@@ -10,7 +10,7 @@ class Parcel:
         """ This method creates a parcel delivery order """
 
         date_created = datetime.datetime.utcnow()
-        price_quote = Helpers.gen_price(parcel_weight)
+        price_quote = Helpers.gen_price(int(parcel_weight))
         sql = "INSERT INTO parcel_orders(parcel_description,parcel_weight,price_quote,parcel_source,parcel_destination,receiver_name,receiver_telephone,date_created,current_location,status,user_id) VALUES('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}') ".format(parcel_description,parcel_weight,price_quote,parcel_source,parcel_destination,receiver_name,receiver_telephone,date_created,current_location,status,user_id)
         self.db_object.cursor.execute(sql)
 
