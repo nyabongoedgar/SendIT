@@ -1,6 +1,6 @@
 """ This module defines and sets the environment  """
 import os
-class BaseConfig(object):
+class BaseConfig():
     DEBUG = False
     SECRET_KEY = '\x84\x16\xdb\xc2`\xf3@K\x81\x9c5\xbf\x1b)\tg\xce),b\x930('
     
@@ -16,7 +16,6 @@ class TestConfig(BaseConfig):
 class DevelopmentConfig(BaseConfig):
     """ This class sets the DEVELOPMENT environment variables """
     DEBUG = True
-
 
 class ProductionConfig(BaseConfig):
     """ This class sets the PRODUCTION environment variables """
