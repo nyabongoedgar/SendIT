@@ -23,9 +23,7 @@ class DatabaseConnection:
 
             parcels_orders_table_sql = "CREATE TABLE IF NOT EXISTS parcel_orders (parcel_id SERIAL NOT NULL, user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE, parcel_description TEXT NOT NULL, parcel_weight INTEGER NOT NULL, price_quote INTEGER, parcel_source VARCHAR (255) NOT NULL, parcel_destination VARCHAR (255) NOT NULL, receiver_name VARCHAR (100) NOT NULL, receiver_telephone VARCHAR(10) NOT NULL, date_created TIMESTAMP NOT NULL,current_location VARCHAR(200),status VARCHAR(30), PRIMARY KEY(parcel_id,user_id));"
 
-             
-
-           
+            
             self.cursor.execute(users_table_sql)
             self.cursor.execute(parcels_orders_table_sql)
 
