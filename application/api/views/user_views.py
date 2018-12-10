@@ -10,6 +10,7 @@ from flask_jwt_extended import (
     JWTManager, jwt_required, create_access_token,
     get_jwt_identity
 )
+from flask_cors import CORS
 
 def require_appkey(view_function):
     @wraps(view_function)
@@ -28,7 +29,7 @@ app.config['JWT_SECRET_KEY'] = '\x01\n=:\x87\xe1\x02\xca\x81\x8b\x0c\xe4Y=\x87\x
 jwt = JWTManager(app)
 
 user_blueprint  = Blueprint('User',__name__, url_prefix='/api/v2/')
-
+CORS(User)
 @user_blueprint.route('/auth/signup', methods = ['POST']) 
 def register_user():
     """ This function registers a user by using his username,password and email """

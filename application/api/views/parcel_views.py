@@ -8,9 +8,11 @@ from application.api.models.parcels import Parcel
 from flask_jwt_extended import (
     jwt_required, get_jwt_identity
 )
+from flask_cors import CORS
 
  
 parcel = Blueprint('Parcel',__name__, url_prefix='/api/v2/')
+CORS(parcel)
 
 user_object = User()
 parcel_object = Parcel()
