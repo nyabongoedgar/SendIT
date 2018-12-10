@@ -28,8 +28,8 @@ app.config['JWT_SECRET_KEY'] = '\x01\n=:\x87\xe1\x02\xca\x81\x8b\x0c\xe4Y=\x87\x
 
 jwt = JWTManager(app)
 
-user_blueprint  = Blueprint('User',__name__, url_prefix='/api/v2/')
-CORS(User)
+user_blueprint  = Blueprint('user_bp',__name__, url_prefix='/api/v2/')
+CORS(user_bp)
 @user_blueprint.route('/auth/signup', methods = ['POST']) 
 def register_user():
     """ This function registers a user by using his username,password and email """
